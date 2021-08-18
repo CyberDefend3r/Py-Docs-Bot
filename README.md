@@ -1,5 +1,7 @@
 # Python Reference Bot
-A reddit.com bot that will return reference links, how-to guides, and video walkthroughs. The bot will lurk the [/r/learnpython](https://www.reddit.com/r/learnpython/) subreddit and read all comments looking for its keywords. When found the bot will reply to the comment with the requested links to documentation all nicely formatted in markdown.  
+A reddit.com bot that will return reference links for official python docs, online references, and youtube videos.  
+  
+The bot will lurk the [/r/learnpython](https://www.reddit.com/r/learnpython/) subreddit and read all comments looking for its keywords. When found the bot will reply to the comment with the requested links to documentation all nicely formatted in markdown.  
   
 ## Usage
 **NOTE:**  
