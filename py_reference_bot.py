@@ -265,7 +265,7 @@ def build_comment(all_links):
         comment_markdown += f"  \n{module_links}  \n"
 
     # If one of the links was not valid the validate function returns an empty string that when evaluated in this function
-    # Gets formatted as `* \n` so I just strip that out before returning the comment.
+    # Gets formatted as `- \n` so I just strip that out before returning the comment.
     return comment_markdown.replace("- \n", "")
 
 
