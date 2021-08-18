@@ -24,10 +24,12 @@ def main():
     Main function
     '''
 
+    print("Authenticating to reddit")
     # Instantiate reddit class and authenticate
     reddit = reddit_authenticate()
     # Define subreddit to monitor
     subreddit = reddit.subreddit(subreddit_name)
+    print("Starting comments scanning")
     # Call function to start itterating through comments
     scan_comments(subreddit)
 
@@ -255,7 +257,7 @@ def build_comment(all_links):
 
 
 if __name__ == "__main__":
-
+    print("reading in credentials")
     config = configparser.ConfigParser()
     config.read("credentials.ini")
     reddit_api_id = config["reddit"]["client_id"]
