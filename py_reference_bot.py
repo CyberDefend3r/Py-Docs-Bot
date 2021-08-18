@@ -6,6 +6,13 @@ This reddit bot will lurk the /r/learnpython subreddit and when invoked by keywo
 Creator: Trevor Miller
 GitHub: https://github.com/trevormiller6
 reddit: https://www.reddit.com/user/trevor_of_earth/
+
+TODO:
+ * Add flexability to syntax for seperation of command arguments (allow both comma space `, ` and just comma `,`)
+ * Remove print() statements and set up actual logging
+ * On a !py_howto search show the entire google query not just the search terms
+ * Review and look for ways to optimize and possibily restructure/refactor code if needed
+ * Move to heroku.com or something similar
 '''
 
 # Standard
