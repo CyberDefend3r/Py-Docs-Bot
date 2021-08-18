@@ -228,7 +228,7 @@ def build_comment(all_links):
     Format in markdown.
     '''
 
-    comment_markdown = "**Thanks for using the Python Reference Bot!**\n*I am a work in progress; forgive me if I get something wrong.*\n\n"
+    comment_markdown = "**Thanks for using the Python Reference Bot!**\n*For available commands see [GitHub](https://github.com/trevormiller6/Py-Reference)*\n\n"
     new_line = "\n"
 
     for pymodule, link_list in all_links.items():
