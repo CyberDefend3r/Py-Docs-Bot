@@ -8,6 +8,7 @@ GitHub: https://github.com/trevormiller6
 reddit: https://www.reddit.com/user/trevor_of_earth/
 
 TODO:
+ * Handle rate limiting imposed by reddit
  * Add flexability to syntax for seperation of command arguments (allow both comma space `, ` and just comma `,`)
  * Remove print() statements and set up actual logging
  * On a !py-howto search show the entire google query not just the search terms
