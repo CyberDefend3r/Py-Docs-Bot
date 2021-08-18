@@ -19,6 +19,7 @@ TODO:
 import configparser
 import re
 import requests
+from time import sleep
 
 # Non-standard
 from googlesearch import search
@@ -66,38 +67,41 @@ def scan_comments(subreddit):
         # Check for keyword !py_refs in comment. If found get reference links from python documentatiom, google, youtube.
         # Module paths are case sensitive.
         # command usage: !py_refs pathlib.path, re.search, requests
-        if "!py\\_refs" in comment.body or "!py_refs" in comment.body:
+        if "!py-refs" in comment.body:
             try:
-                needed_references = re.search(r"^\!py\\\_refs\s(.+)$|^\!py\_refs\s(.+)$", comment.body, flags=re.MULTILINE).group(1).split(", ")
+                needed_references = re.search(r"^\!py\-refs\s(.+)$", comment.body, flags=re.MULTILINE).group(1).split(", ")
                 all_links = get_links(needed_references, "all")
                 comment.reply(build_comment(all_links))
                 print("replied to a comment")
             except AttributeError:
                 continue
+            sleep(10)
 
         # Check for keyword !py_official. If found get link to offical python documentation from https://docs.python.org/3/library/
         # Module paths are case sensitive.
         # Command usage: !py_official function.zip, function.enumerate, requests
-        if "!py\\_official" in comment.body or "!py_official" in comment.body:
+        if "!py-official" in comment.body:
             try:
-                needed_references = re.search(r"^\!py\\\_official\s(.+)$|^\!py\_official\s(.+)$", comment.body, flags=re.MULTILINE).group(1).split(", ")
+                needed_references = re.search(r"^\!py\-official\s(.+)$", comment.body, flags=re.MULTILINE).group(1).split(", ")
                 all_links = get_links(needed_references, "official")
                 comment.reply(build_comment(all_links))
                 print("replied to a comment")
             except AttributeError:
                 continue
+            sleep(10)
 
         # Check for keyword !py_howto. If found get reference material from google and youtube. All that needs to be passed to the bot is the topic. The bot will
         # search google with the query: `how to <python topic> 'python'`
         # Command usage: !py_howto for loops, list comprehension
-        if "!py\\_howto" in comment.body or "!py_howto" in comment.body:
+        if "!py-howto" in comment.body:
             try:
-                needed_references = re.search(r"^\!py\\\_howto\s(.+)$|^\!py\_howto\s(.+)$", comment.body, flags=re.MULTILINE).group(1).split(", ")
+                needed_references = re.search(r"^\!py\-howto\s(.+)$", comment.body, flags=re.MULTILINE).group(1).split(", ")
                 all_links = get_links(needed_references, "howto")
                 comment.reply(build_comment(all_links))
                 print("replied to a comment")
             except AttributeError:
                 continue
+            sleep(10)
 
 def get_links(needed_references, reference_types):
     '''
