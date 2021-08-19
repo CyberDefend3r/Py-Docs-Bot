@@ -5,20 +5,20 @@ The bot will lurk the [/r/learnpython](https://www.reddit.com/r/learnpython/) su
   
 ## Usage
 
-**Invoke the bot with `!doc` keyword**  
-- All you need to do to invoke the bot is to use the `!doc` keyword followed by a comma seperated list of search terms.  
+**Invoke the bot with `!docs` keyword**  
+- All you need to do to invoke the bot is to use the `!docs` keyword followed by a comma seperated list of search terms.  
 ```
-!doc sys.path, relative imports, import a module from a different directory
+!docs sys.path, relative imports, import a module from a different directory
 ```  
   
 - The bot will determine if any of the search terms are part of the python standard library or if it should simply search google/youtube for references.  
-- Google and youtube both search with the query: `how to <search terms> 'python'` and select the top 3 results. For example, `!doc for loops` would search google with the query `how to for loops 'python'`. The quotes around python tells google that python must be in the results it returns.  
+- Google and youtube both search with the query: `how to <search terms> 'python'` and select the top 3 results. For example, `!docs for loops` would search google with the query `how to for loops 'python'`. The quotes around python tells google that python must be in the results it returns.  
   
 
   
 **Things to keep in mind**  
 - The keyword and search terms must be on its own line in your comment or it will be ignored by the bot.  
-- Full method path is required if you want to return links to official python documentation and the paths are case sensitive. (Correct: `!doc pathlib.Path`, Incorrect: `!doc Path`). The exceptions are if you want to return python documentation for the entire module (`!doc pathlib`) and built-in python functions like zip, map, filter, etc. because there is no chain for those functions.  
+- Full method path is required if you want to return links to official python documentation and the paths are case sensitive. (Correct: `!docs pathlib.Path`, Incorrect: `!docs Path`). The exceptions are if you want to return python documentation for the entire module (`!docs pathlib`) and built-in python functions like zip, map, filter, etc. because there is no chain for those functions.  
     
 # Example
   
@@ -41,7 +41,7 @@ you would need to do one of the following:
   
 You can use sys.path to add the directory to PATH so that python will check that directory for imports.  
   
-!doc sys.path, relative imports, import module from a different directory  
+!docs sys.path, relative imports, import module from a different directory  
 ```  
   
 **Bot Reply to Your Comment:**  
