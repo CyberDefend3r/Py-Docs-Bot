@@ -10,11 +10,8 @@ The bot will lurk the [/r/learnpython](https://www.reddit.com/r/learnpython/) su
 ```
 !docs sys.path, relative imports, import a module from a different directory
 ```  
-  
 - The bot will determine if any of the search terms are part of the python standard library or if it should simply search google/youtube for references.  
-- Google and youtube both search with the query: `how to <search terms> 'python'` and select the top 3 results. For example, `!docs for loops` would search google with the query `how to for loops 'python'`. The quotes around python tells google that python must be in the results it returns.  
-  
-
+- Google and youtube both search with the query: `how to <search terms> 'python'` and select the top 3 results. For example, `!docs for loops` would search google with the query `how to for loops 'python'`. The quotes around python tells google that "python" must be in the results it returns.  
   
 **Things to keep in mind**  
 - The keyword and search terms must be on its own line in your comment or it will be ignored by the bot.  
