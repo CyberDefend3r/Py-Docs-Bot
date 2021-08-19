@@ -1,7 +1,7 @@
 '''
 Python Reference Bot for reddit.
 
-This reddit bot will lurk the /r/learnpython subreddit and when invoked by keyword will reply with links to python documentation, online resources, and youtube videos for any python topic(s) requested. 
+This reddit bot will monitor the /r/learnpython subreddit and when invoked by keyword will reply with links to python documentation for any python topic(s) requested. 
 
 Creator: Trevor Miller
 GitHub: https://github.com/trevormiller6
@@ -18,10 +18,10 @@ TODO:
 import configparser
 import re
 import requests
-from time import sleep
+#from time import sleep
 
 # Non-standard
-from googlesearch import search
+#from googlesearch import search
 from lxml.html import fromstring
 import praw
 
@@ -38,7 +38,7 @@ def main():
     subreddit = reddit.subreddit(subreddit_name)
     print("Starting comments scanning")
     # Call function to start itterating through comments
-    lurk_comments(subreddit)
+    monitor_comments(subreddit)
 
 def reddit_authenticate():
     '''
@@ -53,7 +53,7 @@ def reddit_authenticate():
 
     return reddit
 
-def lurk_comments(subreddit):
+def monitor_comments(subreddit):
     '''
     Loop through comments from the learnpython subreddit and check for bot keyword.
     If found parse the topics out and retrive related links to documentation and post a reply with the links.
@@ -61,14 +61,14 @@ def lurk_comments(subreddit):
 
     # Loop over comment objects returned from reddit. skip_existing=True means that when the bot
     # starts it will not go back and get existing comments and instead start with new ones.
-    for comment in subreddit.stream.comments(skip_existing=True):
+    for comment in ["!docs sys.path"]:#subreddit.stream.comments(skip_existing=True):
 
-        # Check for keyword !docs in comment. If found get reference links from python documentatiom, google, youtube.
+        # Check for keyword !docs in comment. If found get reference links from python documentatiom
         # Module paths are case sensitive.
         # command usage: !docs pathlib.Path, re.search, requests
-        if bool(re.search(r"^\!docs\s(.+)$", comment.body, flags=re.MULTILINE)):
+        if bool(re.search(r"^\!docs\s(.+)$", comment, flags=re.MULTILINE)):
 
-            needed_references = re.search(r"^\!docs\s(.+)$", comment.body, flags=re.MULTILINE).group(1)
+            needed_references = re.search(r"^\!docs\s(.+)$", comment, flags=re.MULTILINE).group(1)
             
             if bool(re.search(r"\s\,\s", needed_references)):
                 needed_references = needed_references.split(" , ")
@@ -78,7 +78,9 @@ def lurk_comments(subreddit):
                 needed_references = needed_references.split(",")
 
             all_links = get_links(needed_references)
-            comment.reply(build_comment(all_links))
+            with open("response.md", "w", encoding="utf-8") as file:
+                file.write(build_comment(all_links))
+            #comment.reply(build_comment(all_links))
             print("replied to a comment")
 
 def get_links(needed_references):
@@ -104,41 +106,41 @@ def get_links(needed_references):
 
             return ""
 
-    def _search_google(search_terms, search_type):
-        '''
-        get google and youtube reference links.
-        Google query is structured `how to <search terms> 'python'`. Python is in quotes because that tells google
-        that it must exist in the results that are returned. Safe search is on in case any user tries to get naughty.
-        '''
+    # def _search_google(search_terms, search_type):
+    #     '''
+    #     get google and youtube reference links.
+    #     Google query is structured `how to <search terms> 'python'`. Python is in quotes because that tells google
+    #     that it must exist in the results that are returned. Safe search is on in case any user tries to get naughty.
+    #     '''
 
-        # Google video search specifically on the site youtube.com
-        if search_type:
-            google_links = search(f"site:youtube.com how to {search_terms} 'python'",
-                                    tld="com",
-                                    lang="english",
-                                    country="us",
-                                    safe="on",
-                                    start=1,
-                                    stop=3,
-                                    extra_params={"tbm": search_type},
-                                    user_agent=None)
-            valid_google_links = [_validate_and_markdown_format_link(link) for link in google_links]
+    #     # Google video search specifically on the site youtube.com
+    #     if search_type:
+    #         google_links = search(f"site:youtube.com how to {search_terms} 'python'",
+    #                                 tld="com",
+    #                                 lang="english",
+    #                                 country="us",
+    #                                 safe="on",
+    #                                 start=1,
+    #                                 stop=3,
+    #                                 extra_params={"tbm": search_type},
+    #                                 user_agent=None)
+    #         valid_google_links = [_validate_and_markdown_format_link(link) for link in google_links]
 
-            return {"reference_vids": valid_google_links}
+    #         return {"reference_vids": valid_google_links}
 
-        # Regular google search
-        else:
-            google_links = search(f"how to {search_terms} 'python'",
-                                    tld="com",
-                                    lang="english",
-                                    country="us",
-                                    safe="on",
-                                    start=1,
-                                    stop=3,
-                                    user_agent=None)
-            valid_google_links = [_validate_and_markdown_format_link(link) for link in google_links]
+    #     # Regular google search
+    #     else:
+    #         google_links = search(f"how to {search_terms} 'python'",
+    #                                 tld="com",
+    #                                 lang="english",
+    #                                 country="us",
+    #                                 safe="on",
+    #                                 start=1,
+    #                                 stop=3,
+    #                                 user_agent=None)
+    #         valid_google_links = [_validate_and_markdown_format_link(link) for link in google_links]
 
-            return {"reference_links": valid_google_links}
+    #         return {"reference_links": valid_google_links}
     
     def _get_official_docs(reference):
         '''
@@ -189,13 +191,15 @@ def get_links(needed_references):
     
     for reference in needed_references:
 
-        if " " in reference:
-            all_links[reference].append(_search_google(reference, None))
-            all_links[reference].append(_search_google(reference, "vid"))
-        else:
-            all_links[reference].append(_get_official_docs(reference))
-            all_links[reference].append(_search_google(reference, None))
-            all_links[reference].append(_search_google(reference, "vid"))
+        all_links[reference].append(_get_official_docs(reference))
+
+        # if " " in reference:
+        #     all_links[reference].append(_search_google(reference, None))
+        #     all_links[reference].append(_search_google(reference, "vid"))
+        # else:
+        #     all_links[reference].append(_get_official_docs(reference))
+        #     all_links[reference].append(_search_google(reference, None))
+        #     all_links[reference].append(_search_google(reference, "vid"))
 
     return all_links
 
@@ -205,29 +209,29 @@ def build_comment(all_links):
     Format in markdown.
     '''
 
-    comment_markdown = "**Thanks for using the Python Reference Bot!**  \n*For instructions on how to use me, check out my README on [GitHub](https://github.com/trevormiller6/Py-Reference)*  \n"
-    new_line = "\n"
+    comment_markdown = ""
+    # new_line = "\n"
 
     for reference, link_list in all_links.items():
 
-        module_links = f"# {reference}:"
+        module_links = f"Docs for {reference}:  \n"
 
         for link_type in link_list:
 
             if "official_links" in link_type:
-                official_docs = f"\n\nOfficial Documentation:  \n- {link_type['official_links']}"
+                official_docs = f"{link_type['official_links']}  "
                 module_links += official_docs
 
-            if "reference_links" in link_type:
-                online_refs = f"\n\nOnline Resources:  \n- {f'  {new_line}- '.join(link_type['reference_links'])}"
-                module_links += online_refs
+            # if "reference_links" in link_type:
+            #     online_refs = f"\n\nOnline Resources:  \n- {f'  {new_line}- '.join(link_type['reference_links'])}"
+            #     module_links += online_refs
 
-            if "reference_vids" in link_type:
-                online_vids = f"\n\nYoutube Videos:  \n- {f'  {new_line}- '.join(link_type['reference_vids'])}"
-                module_links += online_vids
+            # if "reference_vids" in link_type:
+            #     online_vids = f"\n\nYoutube Videos:  \n- {f'  {new_line}- '.join(link_type['reference_vids'])}"
+            #     module_links += online_vids
 
-        comment_markdown += f"  \n{module_links}  \n"
-
+        comment_markdown += f"{module_links}  \n"
+    comment_markdown += "  \nPython Reference Bot - *Documentation on [GitHub](https://github.com/trevormiller6/Py-Reference)*"
     # If one of the links was not valid the validate function returns an empty string that when evaluated in this function
     # Gets formatted as `- \n` so I just strip that out before returning the comment.
     return comment_markdown.replace("- \n", "")
@@ -243,13 +247,13 @@ if __name__ == "__main__":
     reddit_password = config["reddit"]["password"]
     subreddit_name = "learnpython"
     bot_user_agent = "(praw-python3.9) py_reference_bot - scanning comments in /r/learnpython and replying with python references"
-
-    while True:
-        try:
-            main()
-        except Exception as e:
-            print(e)
-            continue
-        except KeyboardInterrupt:
-            print("Exiting")
-            break
+    main()
+    # while True:
+    #     try:
+    #         main()
+    #     except Exception as e:
+    #         print(e)
+    #         continue
+    #     except KeyboardInterrupt:
+    #         print("Exiting")
+    #         break
