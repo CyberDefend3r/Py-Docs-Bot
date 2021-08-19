@@ -14,7 +14,7 @@ All you need to do to invoke the bot is to use the `!doc` keyword followed by a 
   
 # Example
   
-<u>**Original Post:**</u>  
+**Original Post:**  
   
 ```
 How do I import a module that is not in the same directory as my script?
@@ -22,20 +22,23 @@ How do I import a module that is not in the same directory as my script?
 I cant figure out what I am doing wrong. Can anyone help point me in the right direction
 ```
 
-<u>**Your Comment:**</u>  
+**Your Comment:**  
   
 ```
-Python will check PATH and the directory the script is in for imports. If it is not in either of those locations, you would need to add it to PATH,  
-move it into the script directory or use relative imports.  
+Python will check PATH and the directory the script is in for imports. If it is not in those locations,  
+you would need to do one of the following:  
+    1) add it to PATH  
+    2) move it into the script directory  
+    3) use relative imports  
   
-You can use sys.path to add the directory to path so that python will check that directory for imports.  
+You can use sys.path to add the directory to PATH so that python will check that directory for imports.  
   
 !doc sys.path, relative imports, import module from a different directory  
 ```  
   
-<u>**Bot Reply to Your Comment:**</u>  
+**Bot Reply to Your Comment:**  
   
-
+---
 **Thanks for using the Python Reference Bot!**  
 *For instructions on how to use me, check out my README on [GitHub](https://github.com/trevormiller6/Py-Reference)*  
   
