@@ -61,14 +61,14 @@ def monitor_comments(subreddit):
 
     # Loop over comment objects returned from reddit. skip_existing=True means that when the bot
     # starts it will not go back and get existing comments and instead start with new ones.
-    for comment in ["!docs sys.path"]:#subreddit.stream.comments(skip_existing=True):
+    for comment in subreddit.stream.comments(skip_existing=True):
 
         # Check for keyword !docs in comment. If found get reference links from python documentatiom
         # Module paths are case sensitive.
         # command usage: !docs pathlib.Path, re.search, requests
-        if bool(re.search(r"^\!docs\s(.+)$", comment, flags=re.MULTILINE)):
+        if bool(re.search(r"^\!docs\s(.+)$", comment.body, flags=re.MULTILINE)):
 
-            needed_references = re.search(r"^\!docs\s(.+)$", comment, flags=re.MULTILINE).group(1)
+            needed_references = re.search(r"^\!docs\s(.+)$", comment.body, flags=re.MULTILINE).group(1)
             
             if bool(re.search(r"\s\,\s", needed_references)):
                 needed_references = needed_references.split(" , ")
@@ -78,9 +78,7 @@ def monitor_comments(subreddit):
                 needed_references = needed_references.split(",")
 
             all_links = get_links(needed_references)
-            with open("response.md", "w", encoding="utf-8") as file:
-                file.write(build_comment(all_links))
-            #comment.reply(build_comment(all_links))
+            comment.reply(build_comment(all_links))
             print("replied to a comment")
 
 def get_links(needed_references):
@@ -247,13 +245,12 @@ if __name__ == "__main__":
     reddit_password = config["reddit"]["password"]
     subreddit_name = "learnpython"
     bot_user_agent = "(praw-python3.9) py_reference_bot - scanning comments in /r/learnpython and replying with python references"
-    main()
-    # while True:
-    #     try:
-    #         main()
-    #     except Exception as e:
-    #         print(e)
-    #         continue
-    #     except KeyboardInterrupt:
-    #         print("Exiting")
-    #         break
+    while True:
+        try:
+            main()
+        except Exception as e:
+            print(e)
+            continue
+        except KeyboardInterrupt:
+            print("Exiting")
+            break
