@@ -9,10 +9,8 @@ reddit: https://www.reddit.com/user/trevor_of_earth/
 
 TODO:
  * Handle rate limiting imposed by reddit
- * Add flexability to syntax for seperation of command arguments (allow both comma space `, ` and just comma `,`)
  * Remove print() statements and set up actual logging
- * On a !py-howto search show the entire google query not just the search terms
- * Review and look for ways to optimize and possibily restructure/refactor code if needed
+ * Review for ways to optimize and possibily restructure/refactor code if needed
  * Move to heroku.com or something similar
 '''
 
@@ -40,7 +38,7 @@ def main():
     subreddit = reddit.subreddit(subreddit_name)
     print("Starting comments scanning")
     # Call function to start itterating through comments
-    scan_comments(subreddit)
+    lurk_comments(subreddit)
 
 def reddit_authenticate():
     '''
@@ -55,57 +53,35 @@ def reddit_authenticate():
 
     return reddit
 
-def scan_comments(subreddit):
+def lurk_comments(subreddit):
     '''
-    Loop through comments from the learnpython subreddit and check for bot keywords.
-    If found parse the topics out and retrive related links to documentation and post a reply with the links gathered.
+    Loop through comments from the learnpython subreddit and check for bot keyword.
+    If found parse the topics out and retrive related links to documentation and post a reply with the links.
     '''
 
     # Loop over comment objects returned from reddit. skip_existing=True means that when the bot
     # starts it will not go back and get existing comments and instead start with new ones.
     for comment in subreddit.stream.comments(skip_existing=True):
 
-        # Check for keyword !py-refs in comment. If found get reference links from python documentatiom, google, youtube.
+        # Check for keyword !docs in comment. If found get reference links from python documentatiom, google, youtube.
         # Module paths are case sensitive.
-        # command usage: !py-refs pathlib.path, re.search, requests
-        if "!py-refs" in comment.body:
-            try:
-                needed_references = re.search(r"^\!py\-refs\s(.+)$", comment.body, flags=re.MULTILINE).group(1).split(", ")
-                all_links = get_links(needed_references, "all")
-                sleep(10)
-                comment.reply(build_comment(all_links))
-                print("replied to a comment")
-            except AttributeError:
-                continue
+        # command usage: !docs pathlib.Path, re.search, requests
+        if bool(re.search(r"^\!docs\s(.+)$", comment.body, flags=re.MULTILINE)):
 
-        # Check for keyword !py-official. If found get link to offical python documentation from https://docs.python.org/3/library/
-        # Module paths are case sensitive.
-        # Command usage: !py-official function.zip, function.enumerate, requests
-        if "!py-official" in comment.body:
-            try:
-                needed_references = re.search(r"^\!py\-official\s(.+)$", comment.body, flags=re.MULTILINE).group(1).split(", ")
-                all_links = get_links(needed_references, "official")
-                sleep(10)
-                comment.reply(build_comment(all_links))
-                print("replied to a comment")
-            except AttributeError:
-                continue
+            needed_references = re.search(r"^\!docs\s(.+)$", comment.body, flags=re.MULTILINE).group(1)
             
+            if bool(re.search(r"\s\,\s", needed_references)):
+                needed_references = needed_references.split(" , ")
+            elif bool(re.search(r"\,\s", needed_references)):
+                needed_references = needed_references.split(", ")
+            else:
+                needed_references = needed_references.split(",")
 
-        # Check for keyword !py-howto. If found get reference material from google and youtube. All that needs to be passed to the bot is the topic. The bot will
-        # search google with the query: `how to <python topic> 'python'`
-        # Command usage: !py-howto for loops, list comprehension
-        if "!py-howto" in comment.body:
-            try:
-                needed_references = re.search(r"^\!py\-howto\s(.+)$", comment.body, flags=re.MULTILINE).group(1).split(", ")
-                all_links = get_links(needed_references, "howto")
-                sleep(10)
-                comment.reply(build_comment(all_links))
-                print("replied to a comment")
-            except AttributeError:
-                continue
+            all_links = get_links(needed_references)
+            comment.reply(build_comment(all_links))
+            print("replied to a comment")
 
-def get_links(needed_references, reference_types):
+def get_links(needed_references):
     '''
     Gather all the links to reference materials requested.
     '''
@@ -164,25 +140,28 @@ def get_links(needed_references, reference_types):
 
             return {"reference_links": valid_google_links}
     
-    def _get_official_docs(pymodule):
+    def _get_official_docs(reference):
         '''
         Get link to official python documentation. Python kinda standardized their link structure for their documentation
         but there is a little weirdness that we check for.
         '''
 
+        builtin_functions = ["abs", "delattr", "hash", "memoryview", "set", "all", "dict", "help", "min", "setattr", "any", "dir", "hex", "next", "slice", "ascii", 
+                            "divmod", "id", "object", "sorted", "bin", "enumerate", "input", "oct", "staticmethod", "bool", "eval", "int", "open", "str", "breakpoint", 
+                            "exec", "isinstance", "ord", "sum", "bytearray", "filter", "issubclass", "pow", "super", "bytes", "float", "iter", "print", "tuple", "callable", 
+                            "format", "len", "property", "type", "chr", "frozenset", "list", "range", "vars", "classmethod", "getattr", "locals", "repr", "zip", "compile", 
+                            "globals", "map", "reversed", "__import__", "complex", "hasattr", "max", "round"]
+
         # For python built-in functions (zip, map, filter, enumerate, etc.), they did not get their own page and instead are all on one page.
-        # I am requiring that the user puts `function.` infront of these function names to distiguish them from the other python libraries. 
-        # Also, python has them all on a pgae called functions so I felt like it made sense
-        # Split on the `.` and grab the second item in the list to build the link.
-        if "function" in pymodule:
-            link = f"https://docs.python.org/3/library/functions.html#{pymodule.split('.')[1]}"
+        if reference in builtin_functions:
+            link = f"https://docs.python.org/3/library/functions.html#{reference}"
             link_is_valid = _validate_and_markdown_format_link(link)
 
         # If function was not in the module name then attempt to create a link with the full module name, ex. `pathlib.Path`.
         # This serves 2 purposes: first to accomadate modules names that don't include class, and second for things like `os.path`
         # that for some reason has its own page in the docs seprate from the `os` docs.
         else:
-            link = f"https://docs.python.org/3/library/{pymodule}.html#{pymodule}"
+            link = f"https://docs.python.org/3/library/{reference}.html#{reference}"
             link_is_valid = _validate_and_markdown_format_link(link)
 
         if link_is_valid:
@@ -193,7 +172,7 @@ def get_links(needed_references, reference_types):
         # This is actually the url path that most of the documentation will have.
         # Split on the `.` and grab the first item in the list which will be the library name ex. pathlib.Path becomes just pathlib
         else:
-            link = f"https://docs.python.org/3/library/{pymodule.split('.')[0]}.html#{pymodule}"
+            link = f"https://docs.python.org/3/library/{reference.split('.')[0]}.html#{reference}"
             link_is_valid = _validate_and_markdown_format_link(link)
 
             if link_is_valid:
@@ -203,35 +182,20 @@ def get_links(needed_references, reference_types):
             # If all of the above failed then it most likely is not a python standard library or function or the user had a typo.
             else:
 
-                return {"official_links": " One of the following occured: This method is not part of the python standard library, you meant to do a `!py-howto` search or you misspelled the python module name. Module names are case sensitive ex. pathlib.Path note the capital `P` because that is how the actual class is called in python and the python doc creators used this in all the naming in their url's."}
+                return {"": ""}
 
-    # Create the dictionary that will store all of our links using the python module name as the key.
-    # In cases where !py-howto was used it will have the search terms.
-    all_links = {pymodule: [] for pymodule in needed_references}
+    # Create the dictionary that will store all of our links using the python module or search terms as the key.
+    all_links = {reference: [] for reference in needed_references}
     
-    # !py-refs was used so we are going to get links from all sources
-    if reference_types == "all":
+    for reference in needed_references:
 
-        for pymodule in needed_references:
-
-            all_links[pymodule].append(_get_official_docs(pymodule))
-            all_links[pymodule].append(_search_google(pymodule, None))
-            all_links[pymodule].append(_search_google(pymodule, "vid"))
-
-    # !py-official was used so we are only going to get a link to python docs
-    if reference_types == "official":
-
-        for pymodule in needed_references:
-
-            all_links[pymodule].append(_get_official_docs(pymodule))
-
-    # !py-howto was used so we are going to get links from google and youtube
-    if reference_types == "howto":
-
-        for pymodule in needed_references:
-
-            all_links[pymodule].append(_search_google(pymodule, None))
-            all_links[pymodule].append(_search_google(pymodule, "vid"))
+        if " " in reference:
+            all_links[reference].append(_search_google(reference, None))
+            all_links[reference].append(_search_google(reference, "vid"))
+        else:
+            all_links[reference].append(_get_official_docs(reference))
+            all_links[reference].append(_search_google(reference, None))
+            all_links[reference].append(_search_google(reference, "vid"))
 
     return all_links
 
@@ -241,12 +205,12 @@ def build_comment(all_links):
     Format in markdown.
     '''
 
-    comment_markdown = "**Thanks for using the Python Reference Bot!**  \nIf you think my references were helpful please upvote!  \n*For a list of available commands, check me out on [GitHub](https://github.com/trevormiller6/Py-Reference)*  \n"
+    comment_markdown = "**Thanks for using the Python Reference Bot!**  \n*For instructions on how to use me, check out my README on [GitHub](https://github.com/trevormiller6/Py-Reference)*  \n"
     new_line = "\n"
 
-    for pymodule, link_list in all_links.items():
+    for reference, link_list in all_links.items():
 
-        module_links = f"# {pymodule}:"
+        module_links = f"# {reference}:"
 
         for link_type in link_list:
 
