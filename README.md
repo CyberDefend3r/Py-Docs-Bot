@@ -25,7 +25,7 @@ I cant figure out what I am doing wrong. Can anyone help point me in the right d
 <u>**Your Comment:**</u>  
   
 ```
-Python will check path and the directory the script is in for imports. If it is not in either of those locations, you would need to add it to path, move it into the script directory or use relative imports.  
+Python will check PATH and the directory the script is in for imports. If it is not in either of those locations, you would need to add it to PATH, move it into the script directory or use relative imports.  
   
 You can use sys.path to add the directory to path so that python will check that directory for imports.  
   
