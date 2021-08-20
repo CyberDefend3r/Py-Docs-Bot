@@ -14,11 +14,10 @@ TODO:
 '''
 
 import configparser
+from os import environ
 import re
 import requests
-from lxml.html import fromstring
 import praw
-import snoop
 
 
 def main():
@@ -37,10 +36,6 @@ def main():
     except Exception:
         print("No credentials.ini file found")
         # Failed to get creds from file so lets check the environment variables.
-        # Only importing the environ method since it will only be needed if
-        # credentials file was not found so we prevent unnecessary imports.
-        from os import environ
-
         try:
             reddit_api_id = environ["REDDIT_DOC_BOT_ID"]
             reddit_api_secret = environ["REDDIT_DOC_BOT_SECRET"]
@@ -81,6 +76,7 @@ def monitor_and_reply_to_comments(subreddit):
         if bool(re.search(r"^\!docs.+$", comment.body, flags=re.MULTILINE)):
             needed_references = re.search(r"^\!docs\s(.+)$", comment.body, flags=re.MULTILINE).group(1).replace(" ", "").split(",")
             all_links = _get_links(needed_references)
+
             if all_links:
                 comment.reply(_build_comment(all_links))
                 print("replied to a comment")
@@ -92,10 +88,11 @@ def _get_links(needed_references):
 
     # Create the dictionary that will store all of our links using the python module or search terms as the key.
     all_links = {}
-    
+
     for reference in needed_references:
 
         ref_link =_get_official_docs(reference)
+
         if ref_link:
             all_links[reference] = ref_link
 
@@ -114,6 +111,7 @@ def _get_official_docs(reference):
         '''
 
         link_results = requests.get(link)
+
         if link_results:
 
             return True
@@ -164,10 +162,8 @@ def _build_comment(all_links):
 
     new_line = "  \n"
     comment_markdown = f"Python Docs:{new_line}"
-    
 
     for reference, link in all_links.items():
-
         comment_markdown += f"[{reference} - {link}]({link}){new_line}"
 
     comment_markdown += f"{new_line}Python Documentation Bot - *[GitHub](https://github.com/trevormiller6/Py-Docs-Bot)*"
@@ -175,13 +171,13 @@ def _build_comment(all_links):
     return comment_markdown
 
 if __name__ == "__main__":
-    main()
-    # while True:
-    #     try:
-    #         main()
-    #     except Exception as e:
-    #         print(e)
-    #         continue
-    #     except (KeyboardInterrupt, SystemExit):
-    #         print("Exiting")
-    #         raise SystemExit
+
+    while True:
+        try:
+            main()
+        except Exception as e:
+            print(e)
+            continue
+        except (KeyboardInterrupt, SystemExit):
+            print("Exiting")
+            raise SystemExit
