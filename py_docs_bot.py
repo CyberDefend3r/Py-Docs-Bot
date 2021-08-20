@@ -54,7 +54,7 @@ def monitor_comments(subreddit):
     If found parse the topics out and retrive related links to documentation and post a reply with the links.
     '''
 
-    print("Monitoring comments scanning")
+    print("Monitoring comments for keyword '!docs'")
 
     # Loop over comment objects returned from reddit. skip_existing=True means that when the bot
     # starts it will not go back and get existing comments and instead start with new ones.
@@ -174,7 +174,6 @@ if __name__ == "__main__":
     bot_user_agent = "(praw-python3.9) py_docs_bot - scanning comments in /r/learnpython and replying with python documentation links"
 
     while True:
-
         try:
             main()
         except Exception as e:
