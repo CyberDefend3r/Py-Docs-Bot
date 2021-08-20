@@ -1,5 +1,5 @@
-# Python Reference Bot
-A reddit.com bot that will return reference links for the python standard library  
+# Python Docs Bot
+A reddit.com bot that will return documentation links for the python standard library  
   
 The bot will monitor the [/r/learnpython](https://www.reddit.com/r/learnpython/) subreddit's comments looking for its keyword. When found the bot will reply to the comment with the requested links to documentation.  
   
@@ -12,8 +12,9 @@ The bot will monitor the [/r/learnpython](https://www.reddit.com/r/learnpython/)
 ```   
   
 **Things to keep in mind**  
-- The keyword and search terms must be on its own line in your comment or it will be ignored by the bot.  
-- Full method path is required and the paths are case sensitive. (Correct: `!docs pathlib.Path`, Incorrect: `!docs Path`). The exceptions are if you want to return python documentation for the entire module (`!docs pathlib`) and built-in python functions like zip, map, filter, etc. because there is no chain for those functions.  
+- To prevent the bot from spamming posts, the bot will not reply if it clouldn't find a valid documentation link based on your search terms. It will silently ignore the request.
+- The keyword and search terms must be on own line in your comment or it will be ignored by the bot.  
+- Full method path is required and the paths are case sensitive. (Correct: `!docs pathlib.Path`, Incorrect: `!docs pathlib.path`, or `!docs Path`). The exceptions are if you want to return python documentation for the entire module (`!docs pathlib`) and built-in python functions like zip, map, filter, etc. because there is no chain for those functions (`!docs map, filter`).  
   
 # Example
   
@@ -39,9 +40,11 @@ You can use sys.path to add the directory to PATH so that python will check that
 !docs sys.path  
 ```    
   
-**Bot Reply to Your Comment:**  
+**Bot's Reply to Your Comment:**  
   
-Docs for sys.path:  
-[sys — System-specific parameters and functions — Python 3.9.6 documentation](https://docs.python.org/3/library/sys.html#sys.path)    
+---
   
-Python Reference Bot - *Documentation on [GitHub](https://github.com/trevormiller6/Py-Reference)*
+Python Docs:  
+[sys.path - https://docs.python.org/3/library/sys.html#sys.path](https://docs.python.org/3/library/sys.html#sys.path)  
+  
+Python Reference Bot - *[GitHub](https://github.com/trevormiller6/Py-Docs-Bot)*
