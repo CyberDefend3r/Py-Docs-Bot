@@ -49,7 +49,6 @@ You can use sys.path to add the directory to PATH so that python will check that
   
 ---
   
-Python Docs:  
 [sys.path - https://docs.python.org/3/library/sys.html#sys.path](https://docs.python.org/3/library/sys.html#sys.path)  
   
-Python Reference Bot - *[GitHub](https://github.com/trevormiller6/Py-Docs-Bot)*
+Python Documentation Bot - *[GitHub](https://github.com/trevormiller6/Py-Docs-Bot)*

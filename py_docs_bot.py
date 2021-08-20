@@ -161,7 +161,7 @@ def _build_comment(all_links):
     '''
 
     new_line = "  \n"
-    comment_markdown = f"Python Docs:{new_line}"
+    comment_markdown = ""
 
     for reference, link in all_links.items():
         comment_markdown += f"[{reference} - {link}]({link}){new_line}"
