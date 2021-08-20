@@ -6,14 +6,16 @@ The bot will monitor the [/r/learnpython](https://www.reddit.com/r/learnpython/)
 ## Usage
 
 **Invoke the bot with `!docs` keyword**  
-- All you need to do to invoke the bot is to use the `!docs` keyword followed by a comma seperated list of search terms.  
+- All you need to do is use the `!docs` keyword followed by a comma seperated list of search terms.  
 ```
 !docs os.path, pathlib.Path
 ```   
   
-**Things to keep in mind**  
-- To prevent the bot from spamming posts, the bot will not reply if it clouldn't find a valid documentation link based on your search terms. It will silently ignore the request.
-- The keyword and search terms must be on own line in your comment or it will be ignored by the bot.  
+**Important**  
+- To prevent the bot from spamming posts, the bot will not reply if it clouldn't find a valid documentation link based on your search terms. It will silently ignore the request.  
+  
+- The keyword and search terms must be on its own line in your comment or it will be ignored by the bot.  
+  
 - Full method path is required and the paths are case sensitive. (Correct: `!docs pathlib.Path`, Incorrect: `!docs pathlib.path`, or `!docs Path`). The exceptions are if you want to return python documentation for the entire module (`!docs pathlib`) and built-in python functions like zip, map, filter, etc. because there is no chain for those functions (`!docs map, filter`).  
   
 # Example
