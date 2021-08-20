@@ -1,7 +1,7 @@
 # Python Docs Bot
 A reddit.com bot that will return documentation links for the python standard library  
   
-The bot will monitor the [/r/learnpython](https://www.reddit.com/r/learnpython/) subreddit's comments looking for its keyword. When found the bot will reply to the comment with the requested links to documentation.  
+The bot will monitor the [r/learnpython](https://www.reddit.com/r/learnpython/) subreddit's comments looking for its keyword. When found the bot will reply to the comment with the requested links to documentation.  
   
 ## Usage
 
@@ -16,7 +16,10 @@ The bot will monitor the [/r/learnpython](https://www.reddit.com/r/learnpython/)
   
 - The keyword and search terms must be on its own line in your comment or it will be ignored by the bot.  
   
-- Full method path is required and the paths are case sensitive. (Correct: `!docs pathlib.Path`, Incorrect: `!docs pathlib.path`, or `!docs Path`). The exceptions are if you want to return python documentation for the entire module (`!docs pathlib`) and built-in python functions like zip, map, filter, etc. because there is no chain for those functions (`!docs map, filter`).  
+- Full method path is required and the paths are case sensitive. (Correct: `!docs pathlib.Path`, Incorrect: `!docs pathlib.path`, or `!docs Path`). 
+  - Exceptions to needing the full method path:
+    - You want to return python documentation for the entire module (Correct: `!docs pathlib`) 
+    - Built-in python functions like zip, map, filter, etc. because there is no chain for those functions (Correct: `!docs filter`).  
   
 # Example
   
