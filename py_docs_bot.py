@@ -7,14 +7,11 @@ Creator: Trevor Miller
 GitHub: https://github.com/trevormiller6
 reddit: https://www.reddit.com/user/trevor_of_earth/
 Bot's reddit: https://www.reddit.com/user/py_reference_bot
-
-TODO:
- * Remove print() statements and set up actual logging
- * Move to heroku.com or something similar if becomes popular... likely wont be needed...
 '''
 
 import configparser
 from json import loads
+import logging
 from os import environ
 import re
 import requests
@@ -36,7 +33,7 @@ def main():
         reddit_username = config["reddit"]["username"]
         reddit_password = config["reddit"]["password"]
     except Exception:
-        print("No credentials.ini file found")
+        logger.error("No credentials.ini file found")
         # Failed to get creds from file so lets check the environment variables.
         try:
             reddit_api_id = environ["REDDIT_DOC_BOT_ID"]
@@ -44,11 +41,11 @@ def main():
             reddit_username = environ["REDDIT_DOC_BOT_USER"]
             reddit_password = environ["REDDIT_DOC_BOT_PASSWORD"]
         except KeyError:
-            print("environment variables not found")
+            logger.critical("environment variables not found")
             raise SystemExit
 
     bot_user_agent = "(praw-python3.9) py_docs_bot - scanning comments in /r/learnpython and replying with python documentation links"
-    print("Authenticating to reddit")
+    logger.info("Authenticating to reddit")
     # Instantiate reddit class and authenticate
     reddit = praw.Reddit(client_id=reddit_api_id,
                          client_secret=reddit_api_secret,
@@ -66,7 +63,7 @@ def monitor_and_reply_to_comments(subreddit):
     If found parse the topics out and retrive related links to documentation and post a reply with the links.
     '''
 
-    print("Monitoring r/learnpython comments for keyword '!docs'")
+    logging.info("Monitoring r/learnpython comments for keyword '!docs'")
 
     # Loop over comment objects returned from reddit. skip_existing=True means that when the bot
     # starts it will not go back and get existing comments and instead start with new ones.
@@ -81,7 +78,7 @@ def monitor_and_reply_to_comments(subreddit):
 
             if all_links:
                 comment.reply(_build_comment(all_links))
-                print("replied to a comment")
+                logger.info("replied to a comment")
 
 def _get_links(needed_references):
     '''
@@ -213,15 +210,19 @@ def _build_comment(all_links):
 
 if __name__ == "__main__":
 
+    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    logger=logging.getLogger("py_docs_bot")
+    
     with open("python_reference_docs.json", "r") as file:
         REFLINKS = loads(file.read())
 
     while True:
         try:
+            logger.info("Starting up...")
             main()
         except Exception as e:
-            print(e)
+            logger.error(e)
             continue
         except (KeyboardInterrupt, SystemExit):
-            print("Exiting")
+            logging.error("Exiting due to no credentials or keyboard interrupt.")
             raise SystemExit
