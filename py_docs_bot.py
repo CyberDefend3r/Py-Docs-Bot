@@ -33,7 +33,7 @@ def main():
         reddit_username = config["reddit"]["username"]
         reddit_password = config["reddit"]["password"]
     except Exception:
-        logger.error("No credentials.ini file found")
+        logger.error("No credentials.ini file found. Checking environment variables.")
         # Failed to get creds from file so lets check the environment variables.
         try:
             reddit_api_id = environ["REDDIT_DOC_BOT_ID"]
@@ -52,6 +52,7 @@ def main():
                          username=reddit_username,
                          password=reddit_password,
                          user_agent=bot_user_agent)
+    logger.info("Authentication successfull to redit.com")
     # Define subreddit to monitor
     subreddit = reddit.subreddit("learnpython")
     # Call function to start itterating through comments
@@ -63,7 +64,7 @@ def monitor_and_reply_to_comments(subreddit):
     If found parse the topics out and retrive related links to documentation and post a reply with the links.
     '''
 
-    logging.info("Monitoring r/learnpython comments for keyword '!docs'")
+    logger.info("Monitoring r/learnpython comments for keyword '!docs'")
 
     # Loop over comment objects returned from reddit. skip_existing=True means that when the bot
     # starts it will not go back and get existing comments and instead start with new ones.
@@ -73,12 +74,14 @@ def monitor_and_reply_to_comments(subreddit):
         # Module paths are case sensitive.
         # command usage: !docs pathlib.Path, re.search, requests, zip
         if bool(re.search(r"^\!docs.+$", comment.body, flags=re.MULTILINE)):
+            logger.info("New command recieved: %s", comment.body)
             needed_references = re.search(r"^\!docs\s(.+)$", comment.body, flags=re.MULTILINE).group(1).replace(" ", "").split(",")
             all_links = _get_links(needed_references)
 
             if all_links:
-                comment.reply(_build_comment(all_links))
-                logger.info("replied to a comment")
+                bot_reply = _build_comment(all_links)
+                comment.reply(bot_reply)
+                logger.info("Replied to a comment: %s", bot_reply)
 
 def _get_links(needed_references):
     '''
