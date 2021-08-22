@@ -15,7 +15,7 @@ Returns links to os.path and pathlib.Path python library reference documentation
 !docs function, class
 ```  
 Returns python language reference links for function definitions and class definitions.  
-    
+  
 **Important**  
 - To prevent the bot from spamming posts, the bot will not reply if it clouldn't find a valid documentation link based on your search terms. It will silently ignore the request.  
   
@@ -27,6 +27,12 @@ Returns python language reference links for function definitions and class defin
     - Built-in python functions like zip, map, filter, etc. because there is no chain for those functions (Correct: `!docs filter`).  
   
 - Language references are found by doing a fuzzy search using the search term provided, so searches are not case sensitive like library references are.  
+  
+- The bot can tell if you are requesting a language or library reference so mixing the two is fine in the same search.  
+```
+!docs while, input
+```
+Returns language reference for while statement and a library reference for the input function.  
   
 To know the difference between the library and language references see the following two links. Though knowing what is provided in them is not necessary to use the bot. This is where all links created by the bot link too.  
   - [Python Language Reference](https://docs.python.org/3/reference/index.html)  
