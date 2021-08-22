@@ -34,7 +34,7 @@ To know the difference between the library and language references see the follo
   
 # Example
   
-Below is an example of how to use me. If you are still confused [checkout my reddit](https://www.reddit.com/user/py_reference_bot) and see how others have used me.
+Below is an example of how to use the bot, if you are still confused [checkout the bot's reddit profile](https://www.reddit.com/user/py_reference_bot) and see how others have used the bot by seeing its replies.  
   
 **Original Post:**  
   
