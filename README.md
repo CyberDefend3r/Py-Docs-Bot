@@ -1,5 +1,5 @@
 # Python Docs Bot
-A reddit.com bot that will return documentation links for the python standard library  
+A reddit.com bot that will return documentation links for the python library and language reference sections of the python docs website.  
   
 The bot will monitor the [r/learnpython](https://www.reddit.com/r/learnpython/) subreddit's comments looking for its keyword. When found the bot will reply to the comment with the requested links to documentation.  
   
@@ -10,16 +10,27 @@ The bot will monitor the [r/learnpython](https://www.reddit.com/r/learnpython/) 
 ```
 !docs os.path, pathlib.Path
 ```   
-  
+Returns links to os.path and pathlib.Path python library reference documentation.  
+```  
+!docs function, class
+```  
+Returns python language reference links for function definitions and class definitions.  
+    
 **Important**  
 - To prevent the bot from spamming posts, the bot will not reply if it clouldn't find a valid documentation link based on your search terms. It will silently ignore the request.  
   
 - The keyword and search terms must be on its own line in your comment or it will be ignored by the bot.  
   
-- Full method path is required and the paths are case sensitive. (Correct: `!docs pathlib.Path`, Incorrect: `!docs pathlib.path`, or `!docs Path`). 
+- Full method path is required and the paths are case sensitive. **library references only.** (Correct: `!docs pathlib.Path`, Incorrect: `!docs pathlib.path`, or `!docs Path`). 
   - Exceptions to needing the full method path:
     - You want to return python documentation for the entire module (Correct: `!docs pathlib`) 
     - Built-in python functions like zip, map, filter, etc. because there is no chain for those functions (Correct: `!docs filter`).  
+  
+- Language references are found by doing a fuzzy search using the search term provided, so searches are not case sensitive like library references are.  
+  
+To know what the difference between the library and language references see the following two links.  
+  - https://docs.python.org/3/reference/index.html  
+  - https://docs.python.org/3/library/index.html  
   
 # Example
   
