@@ -6,6 +6,7 @@ The bot will monitor the [r/learnpython](https://www.reddit.com/r/learnpython/) 
 ## Usage
 
 **Invoke the bot with `!docs` keyword**  
+  
 All you need to do is use the `!docs` keyword followed by a comma seperated list of search terms anywhere in your comment as long as it's on its own line.
 ```
 !docs os.path, pathlib.Path
@@ -14,9 +15,7 @@ Returns links to os.path and pathlib.Path python library reference documentation
 ```  
 !docs function, class
 ```  
-Returns python language reference links for function definitions and class definitions.  
-  
-The bot can tell if you are requesting a language or library reference so mixing the two is fine in the same search.  
+Returns python language reference links for function definitions and class definitions.    
 ```
 !docs while, input
 ```
@@ -27,16 +26,18 @@ Returns language reference for while statement and a library reference for the i
   
 - The keyword and search terms must be on its own line in your comment or it will be ignored by the bot.  
   
-- Full method path is required and the paths are case sensitive. **library references only.** (Correct: `!docs pathlib.Path`, Incorrect: `!docs pathlib.path`, or `!docs Path`). 
+- Full method path is required and the paths are case sensitive for **standard library references only** (Correct: `!docs pathlib.Path`, Incorrect: `!docs pathlib.path`, or `!docs Path`). This is for a few reasons but the biggest one is that it allows the bot to include page anchors in the links. This way if someone is recommending Path from pathlib and sent them the link to pathlib library docs they would have to scroll through all the other methods searching for Path. Page anchors solve that.  
   - Exceptions to needing the full method path:
     - You want to return python documentation for the entire module (Correct: `!docs pathlib`) 
     - Built-in python functions like zip, map, filter, etc. because there is no chain for those functions (Correct: `!docs filter`).  
   
-- Language references are found by doing a fuzzy search using the search term provided, so searches are not case sensitive like library references are.  
+- Python language references are found by doing a fuzzy search using the search term provided against all the items on its index page (linked below), so searches are not case sensitive like library references are and don't need to be the exact wording match to the reference page wanted.  
   
-To know the difference between the library and language references see the following two links. Though knowing what is provided in them is not necessary to use the bot. This is where all links created by the bot link too.  
-  - [Python Language Reference](https://docs.python.org/3/reference/index.html)  
-  - [Python Library Reference](https://docs.python.org/3/library/index.html)  
+Refer to these links to see what the bot can return.  
+  - [Python Language Reference - https://docs.python.org/3/reference/index.html](https://docs.python.org/3/reference/index.html)  
+  - [Python Library Reference - https://docs.python.org/3/library/index.html](https://docs.python.org/3/library/index.html)  
+  
+All links created and distributed by the bot link back to [https://docs.python.org](https://docs.python.org) and no where else.  
   
 # Example
   
