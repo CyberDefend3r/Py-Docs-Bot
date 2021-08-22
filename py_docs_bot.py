@@ -74,14 +74,14 @@ def monitor_and_reply_to_comments(subreddit):
         # Module paths are case sensitive.
         # command usage: !docs pathlib.Path, re.search, requests, zip
         if bool(re.search(r"^\!docs.+$", comment.body, flags=re.MULTILINE)):
-            logger.info("New command recieved: %s", comment.body)
+            logger.info("New command recieved: %s", repr(comment.body))
             needed_references = re.search(r"^\!docs\s(.+)$", comment.body, flags=re.MULTILINE).group(1).replace(" ", "").split(",")
             all_links = _get_links(needed_references)
 
             if all_links:
                 bot_reply = _build_comment(all_links)
                 comment.reply(bot_reply)
-                logger.info("Replied to a comment: %s", bot_reply)
+                logger.info("Replied to a comment: %s", repr(bot_reply))
 
 def _get_links(needed_references):
     '''
