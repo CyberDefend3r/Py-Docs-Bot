@@ -28,9 +28,9 @@ Returns python language reference links for function definitions and class defin
   
 - Language references are found by doing a fuzzy search using the search term provided, so searches are not case sensitive like library references are.  
   
-To know what the difference between the library and language references see the following two links.  
-  - https://docs.python.org/3/reference/index.html  
-  - https://docs.python.org/3/library/index.html  
+To know the difference between the library and language references see the following two links. Though knowing what is provided in them is not necessary to use the bot. This is where all links created by the bot link too.  
+  - [Python Language Reference](https://docs.python.org/3/reference/index.html)  
+  - [Python Library Reference](https://docs.python.org/3/library/index.html)  
   
 # Example
   
