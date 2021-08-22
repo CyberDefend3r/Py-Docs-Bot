@@ -1,2 +1,2 @@
 praw
-lxml
+fuzzywuzzy[speedup]
