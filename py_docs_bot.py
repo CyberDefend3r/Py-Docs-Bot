@@ -93,10 +93,10 @@ def _get_links(needed_references):
 
     for reference in needed_references:
 
-        REFLINKS = [link for link in _get_official_docs(reference) if link ]
+        ref_links = [link for link in _get_official_docs(reference) if link]
 
-        if REFLINKS:
-            all_links[reference] = REFLINKS
+        if ref_links:
+            all_links[reference] = ref_links
 
     return all_links
 
