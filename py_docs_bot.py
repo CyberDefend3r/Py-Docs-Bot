@@ -96,7 +96,7 @@ def monitor_and_reply_to_comments(subreddit):
 
         for link in all_links:
 
-            comment_markdown += link
+            comment_markdown += link  # pylint:disable=consider-using-join
 
         comment_markdown += "  \nPython Documentation Bot - *[How To Use](https://github.com/trevormiller6/Py-Docs-Bot)*"
 
