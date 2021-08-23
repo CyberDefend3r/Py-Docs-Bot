@@ -1,4 +1,4 @@
-[![Pylint & flake8](https://github.com/trevormiller6/Py-Docs-Bot/actions/workflows/flakelint.yml/badge.svg)](https://github.com/trevormiller6/Py-Docs-Bot/actions/workflows/flakelint.yml)  
+[![Pylint & flake8](https://github.com/trevormiller6/Py-Docs-Bot/actions/workflows/flakelint.yml/badge.svg)](https://github.com/trevormiller6/Py-Docs-Bot/actions/workflows/flakelint.yml) [![CodeQL](https://github.com/trevormiller6/Py-Docs-Bot/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/trevormiller6/Py-Docs-Bot/actions/workflows/codeql-analysis.yml)  
 # Python Docs Bot
 A reddit.com bot that will return documentation links for the python library and language reference sections of the python docs website.  
   
