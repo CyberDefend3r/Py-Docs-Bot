@@ -134,7 +134,7 @@ def _get_links_to_python_docs(needed_references):
     Get link to official python documentation.
     """
 
-    def _language_reference_docs():
+    def _language_reference_docs(reference):
         """
         Get links to reference documentation from the python docs site.
         I use fuzzy searching here so that docs called up without having to know the actual title of the reference
@@ -149,7 +149,7 @@ def _get_links_to_python_docs(needed_references):
 
             if match_ratio > 85:
                 matched_references.append(
-                    f'[{link_dict["title"]} - {REFLINKS["python_ref_docs_base_url"]}{reference_entry["link"]}]({REFLINKS["python_ref_docs_base_url"]}{reference_entry["link"]})  \n'
+                    f'[{reference_entry["title"]} - {REFLINKS["python_ref_docs_base_url"]}{reference_entry["link"]}]({REFLINKS["python_ref_docs_base_url"]}{reference_entry["link"]})  \n'
                 )
 
         if matched_references:
@@ -160,14 +160,14 @@ def _get_links_to_python_docs(needed_references):
 
             return ""
 
-    def _library_reference_docs():
+    def _library_reference_docs(reference):
         """
         Get links to the documentation on the standard library.
         Python kinda standardized their link structure for their documentation
         but there is a little weirdness that we check for.
         """
 
-        def _is_link_valid():
+        def _is_link_valid(link):
             """
             Validate that the link created actually works.
             """
@@ -264,7 +264,7 @@ def _get_links_to_python_docs(needed_references):
         else:
             link = f"https://docs.python.org/3/library/{reference}.html#{reference}"
 
-        if _is_link_valid():
+        if _is_link_valid(link):
 
             return f"[{reference} - {link}]({link})  \n"
 
@@ -275,7 +275,7 @@ def _get_links_to_python_docs(needed_references):
         else:
             link = f"https://docs.python.org/3/library/{reference.split('.')[0]}.html#{reference}"
 
-            if _is_link_valid():
+            if _is_link_valid(link):
 
                 return f"[{reference} - {link}]({link})  \n"
 
@@ -286,7 +286,7 @@ def _get_links_to_python_docs(needed_references):
 
     # Loop over each term that was requested by user and get the docs link
     all_links = [
-        _library_reference_docs() + _language_reference_docs()
+        _library_reference_docs(reference) + _language_reference_docs(reference)
         for reference in needed_references
     ]
 
