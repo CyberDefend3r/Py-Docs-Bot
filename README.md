@@ -1,8 +1,6 @@
 [![Pylint & flake8](https://github.com/trevormiller6/Py-Docs-Bot/actions/workflows/flakelint.yml/badge.svg)](https://github.com/trevormiller6/Py-Docs-Bot/actions/workflows/flakelint.yml) [![CodeQL](https://github.com/trevormiller6/Py-Docs-Bot/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/trevormiller6/Py-Docs-Bot/actions/workflows/codeql-analysis.yml)  
 # Python Docs Bot
-A reddit.com bot that will return documentation links for the python library and language reference sections of the python docs website.  
-  
-The bot will monitor the [r/learnpython](https://www.reddit.com/r/learnpython/) subreddit's comments looking for its keyword. When found the bot will reply to the comment with the requested links to documentation.  
+A reddit.com bot that will return documentation links for the library and language reference sections of the python docs website. The bot monitors the [r/learnpython](https://www.reddit.com/r/learnpython/) subreddit's comments looking for its keyword. When found the bot will reply to the comment with the requested links to documentation.  
   
 ## Usage
 
@@ -32,7 +30,7 @@ Returns language reference for while statement and a library reference for the i
     - You want to return python documentation for the entire module (Correct: `!docs pathlib`) 
     - Built-in python functions like zip, map, filter, etc. because there is no chain for those functions (Correct: `!docs filter`).  
   
-- Python language references are found by doing a fuzzy search using the search term provided against all the items on its index page (linked below), so searches are not case sensitive like library references are and don't need to be the exact match to the reference page wanted (basically just a keyword search). For example, `!docs while` would return a link to the language reference page titled "[The while statement](https://docs.python.org/3/reference/compound_stmts.html#the-while-statement)"  
+- Python language references are found by doing a fuzzy search using the search term provided against all the items on its index page (linked below), so searches are not case sensitive (like library references) and don't need to be the exact match to the reference page wanted (basically just a keyword search). For example, `!docs while` would return a link to the language reference page titled "[The while statement](https://docs.python.org/3/reference/compound_stmts.html#the-while-statement)"  
   
 Refer to these links to see what the bot can return.  
   - [Python Language Reference - https://docs.python.org/3/reference/index.html](https://docs.python.org/3/reference/index.html)  
