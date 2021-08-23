@@ -123,7 +123,7 @@ def monitor_and_reply_to_comments(subreddit):
                 comment.reply(bot_reply)
                 LOGGER.info("Replied to a comment: %s", repr(bot_reply))
             else:
-                LOGGER.warn(
+                LOGGER.error(
                     "The request was not valid no response sent. Requested docs: %s",
                     needed_references,
                 )
@@ -152,13 +152,7 @@ def _get_links_to_python_docs(needed_references):
                     f'[{reference_entry["title"]} - {REFLINKS["python_ref_docs_base_url"]}{reference_entry["link"]}]({REFLINKS["python_ref_docs_base_url"]}{reference_entry["link"]})  \n'
                 )
 
-        if matched_references:
-
-            return "".join(matched_references)
-
-        else:
-
-            return ""
+            return "".join(matched_references) if matched_references else ""
 
     def _library_reference_docs(reference):
         """
@@ -174,13 +168,7 @@ def _get_links_to_python_docs(needed_references):
 
             link_results = requests.get(link)
 
-            if link_results:
-
-                return True
-
-            else:
-
-                return False
+                return if link_results
 
         builtin_functions = [
             "abs",
@@ -275,14 +263,9 @@ def _get_links_to_python_docs(needed_references):
         else:
             link = f"https://docs.python.org/3/library/{reference.split('.')[0]}.html#{reference}"
 
-            if _is_link_valid(link):
-
-                return f"[{reference} - {link}]({link})  \n"
+            return f"[{reference} - {link}]({link})  \n" if _is_link_valid(link) else ""
 
             # If all of the above failed then it most likely is not a python standard library or function or the user had a typo.
-            else:
-
-                return ""
 
     # Loop over each term that was requested by user and get the docs link
     all_links = [
