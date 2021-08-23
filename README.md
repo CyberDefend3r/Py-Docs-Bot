@@ -6,7 +6,9 @@ A reddit.com bot that will return documentation links for the library and langua
 
 **Invoke the bot with `!docs` keyword**  
   
-All you need to do is use the `!docs` keyword followed by a comma seperated list of search terms anywhere in your comment as long as it's on its own line.
+All you need to do is use the `!docs` keyword followed by a comma seperated list of search terms anywhere in your comment as long as it's on its own line.  
+  
+**Examples:**
 ```
 !docs os.path, pathlib.Path
 ```   
@@ -38,7 +40,7 @@ Refer to these links to see what the bot can return.
   
 All links created and distributed by the bot link back to [https://docs.python.org](https://docs.python.org) and no where else.  
   
-# Example
+# Full Example
   
 Below is an example of how to use the bot. I have tried to make it super simple to use. If you are still unsure of how to use it you can [checkout the bot's reddit profile](https://www.reddit.com/user/py_reference_bot) and see how others have used the bot by reviewing the comments it has replied to.  
   
