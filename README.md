@@ -42,7 +42,7 @@ All links created and distributed by the bot link back to [https://docs.python.o
   
 # Example
   
-Below is an example of how to use the bot. I have tried to make it super simple to use. If you are still insure of how to use it you can [checkout the bot's reddit profile](https://www.reddit.com/user/py_reference_bot) and see how others have used the bot by reviewing the comments it has replied to.  
+Below is an example of how to use the bot. I have tried to make it super simple to use. If you are still unsure of how to use it you can [checkout the bot's reddit profile](https://www.reddit.com/user/py_reference_bot) and see how others have used the bot by reviewing the comments it has replied to.  
   
 **Original Post:**  
   
