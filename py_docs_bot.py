@@ -98,7 +98,7 @@ def monitor_and_reply_to_comments(subreddit):
 
             comment_markdown += link
 
-        comment_markdown += f"  \nPython Documentation Bot - *[How To Use](https://github.com/trevormiller6/Py-Docs-Bot)*"
+        comment_markdown += "  \nPython Documentation Bot - *[How To Use](https://github.com/trevormiller6/Py-Docs-Bot)*"
 
         return comment_markdown
 
@@ -172,7 +172,7 @@ def _get_links_to_python_docs(needed_references):
 
             link_results = requests.get(link)
 
-            return True if link_results else False
+            return bool(link_results)
 
         # For python built-in functions (zip, map, filter, enumerate, etc.), they did not get their own page and instead are all on one page.
         # So the only thing we needed to set was the page anchor
