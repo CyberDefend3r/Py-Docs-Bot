@@ -32,7 +32,7 @@ Returns language reference for while statement and a library reference for the i
     - You want to return python documentation for the entire module (Correct: `!docs pathlib`) 
     - Built-in python functions like zip, map, filter, etc. because there is no chain for those functions (Correct: `!docs filter`).  
   
-- Python language references are found by doing a fuzzy search using the search term provided against all the items on its index page (linked below), so searches are not case sensitive like library references are and don't need to be the exact wording match to the reference page wanted.  
+- Python language references are found by doing a fuzzy search using the search term provided against all the items on its index page (linked below), so searches are not case sensitive like library references are and don't need to be the exact match to the reference page wanted (basically just a keyword search). For example, `!docs while` would return a link to the language reference page titled "[The while statement](https://docs.python.org/3/reference/compound_stmts.html#the-while-statement)"  
   
 Refer to these links to see what the bot can return.  
   - [Python Language Reference - https://docs.python.org/3/reference/index.html](https://docs.python.org/3/reference/index.html)  
@@ -42,7 +42,7 @@ All links created and distributed by the bot link back to [https://docs.python.o
   
 # Example
   
-Below is an example of how to use the bot, if you are still confused [checkout the bot's reddit profile](https://www.reddit.com/user/py_reference_bot) and see how others have used the bot by seeing its replies.  
+Below is an example of how to use the bot, if you are still confused [checkout the bot's reddit profile](https://www.reddit.com/user/py_reference_bot) and see how others have used the bot by reviewing the comments it has replied to.  
   
 **Original Post:**  
   
