@@ -134,7 +134,7 @@ def _get_links_to_python_docs(needed_references):
     Get link to official python documentation.
     """
 
-    def _language_reference_docs(reference):
+    def _language_reference_docs():
         """
         Get links to reference documentation from the python docs site.
         I use fuzzy searching here so that docs called up without having to know the actual title of the reference
@@ -143,24 +143,24 @@ def _get_links_to_python_docs(needed_references):
 
         matched_references = []
 
-        for link_dict in REFLINKS["python_ref_docs_url_data"]:
+        for reference_entry in REFLINKS["python_ref_docs_url_data"]:
 
-            match_ratio = fuzz.token_set_ratio(link_dict["title"], reference)
+            match_ratio = fuzz.token_set_ratio(reference_entry["title"], reference)
 
             if match_ratio > 85:
                 matched_references.append(
-                    f'[{link_dict["title"]} - {REFLINKS["python_ref_docs_base_url"]}{link_dict["link"]}]({REFLINKS["python_ref_docs_base_url"]}{link_dict["link"]})  \n'
+                    f'[{link_dict["title"]} - {REFLINKS["python_ref_docs_base_url"]}{reference_entry["link"]}]({REFLINKS["python_ref_docs_base_url"]}{reference_entry["link"]})  \n'
                 )
 
         if matched_references:
 
-            return matched_references
+            return "".join(matched_references)
 
         else:
 
-            return []
+            return ""
 
-    def _library_reference_docs(reference):
+    def _library_reference_docs():
         """
         Get links to the documentation on the standard library.
         Python kinda standardized their link structure for their documentation
@@ -266,7 +266,7 @@ def _get_links_to_python_docs(needed_references):
 
         if _is_link_valid():
 
-            return [f"[{reference} - {link}]({link})  \n"]
+            return f"[{reference} - {link}]({link})  \n"
 
         # If after testing the above links to python documentation fails than there is one last url path to try.
         # This is actually the url path that most of the documentation will have.
@@ -277,21 +277,18 @@ def _get_links_to_python_docs(needed_references):
 
             if _is_link_valid():
 
-                return [f"[{reference} - {link}]({link})  \n"]
+                return f"[{reference} - {link}]({link})  \n"
 
             # If all of the above failed then it most likely is not a python standard library or function or the user had a typo.
             else:
 
-                return []
+                return ""
 
     # Loop over each term that was requested by user and get the docs link
     all_links = [
-        _library_reference_docs(reference) + _language_reference_docs(reference)
+        _library_reference_docs() + _language_reference_docs()
         for reference in needed_references
     ]
-
-    # Filter out any values that could be false (False, "", [])
-    all_links = [link for link_list in all_links for link in link_list if link]
 
     return all_links
 
