@@ -168,7 +168,7 @@ def _get_links_to_python_docs(needed_references):
 
             link_results = requests.get(link)
 
-            return if link_results
+            return True if link_results else False
 
         builtin_functions = [
             "abs",
