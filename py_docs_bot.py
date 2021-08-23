@@ -1,13 +1,14 @@
 """
 Python Documentation Bot for reddit.
 
-This reddit bot will monitor the /r/learnpython subreddit and when invoked by keyword will reply with links to python documentation for any python topic(s) requested. 
+This reddit bot will monitor the /r/learnpython subreddit and when invoked by keyword will reply with links to python documentation for any python topic(s) requested.
 
 Creator: Trevor Miller
 GitHub: https://github.com/trevormiller6
 reddit: https://www.reddit.com/user/trevor_of_earth/
 Bot's reddit: https://www.reddit.com/user/py_reference_bot
 """
+
 
 import configparser
 from json import loads
@@ -25,14 +26,15 @@ logging.basicConfig(
 )
 LOGGER = logging.getLogger("py_docs_bot")
 
+
 # Making this variable a global so that it doesnt open and close the file
-# everytime it needs the data in the function _language_reference_docs()
+# everytime it needs it needs the data in the functions that require it
 try:
-    with open("python_reference_docs.json", "r") as reference_docs_file:
-        REFLINKS = loads(reference_docs_file.read())
-    LOGGER.info("Set global variable 'REFLINKS' from file: python_reference_docs.json.")
+    with open("datastore.json", "r") as datastore_file:
+        DATASTORE = loads(datastore_file.read())
+    LOGGER.info("Set global variable 'DATASTORE' from file: datastore.json.")
 except Exception as e:
-    LOGGER.error("Could not open file 'python_reference_docs.json'. %s", e)
+    LOGGER.error("Could not open file 'datastore.json'. %s", e)
     raise SystemExit
 
 
@@ -49,8 +51,9 @@ def main():
         reddit_api_secret = config["reddit"]["client_secret"]
         reddit_username = config["reddit"]["username"]
         reddit_password = config["reddit"]["password"]
-    except Exception:
-        LOGGER.error("No credentials.ini file found. Checking environment variables.")
+    except Exception:  # pylint:disable=broad-except
+        LOGGER.error(
+            "No credentials.ini file found. Checking environment variables.")
         # Failed to get creds from file so lets check the environment variables.
         try:
             reddit_api_id = environ["REDDIT_DOC_BOT_ID"]
@@ -143,16 +146,17 @@ def _get_links_to_python_docs(needed_references):
 
         matched_references = []
 
-        for reference_entry in REFLINKS["python_ref_docs_url_data"]:
+        for reference_entry in DATASTORE["python_ref_docs_url_data"]:
 
-            match_ratio = fuzz.token_set_ratio(reference_entry["title"], reference)
+            match_ratio = fuzz.token_set_ratio(
+                reference_entry["title"], reference)
 
             if match_ratio > 85:
                 matched_references.append(
-                    f'[{reference_entry["title"]} - {REFLINKS["python_ref_docs_base_url"]}{reference_entry["link"]}]({REFLINKS["python_ref_docs_base_url"]}{reference_entry["link"]})  \n'
+                    f'[{reference_entry["title"]} - {DATASTORE["python_ref_docs_base_url"]}{reference_entry["link"]}]({DATASTORE["python_ref_docs_base_url"]}{reference_entry["link"]})  \n'
                 )
 
-            return "".join(matched_references) if matched_references else ""
+        return "".join(matched_references) if matched_references else ""
 
     def _library_reference_docs(reference):
         """
@@ -170,81 +174,9 @@ def _get_links_to_python_docs(needed_references):
 
             return True if link_results else False
 
-        builtin_functions = [
-            "abs",
-            "delattr",
-            "hash",
-            "memoryview",
-            "set",
-            "all",
-            "dict",
-            "help",
-            "min",
-            "setattr",
-            "any",
-            "dir",
-            "hex",
-            "next",
-            "slice",
-            "ascii",
-            "divmod",
-            "id",
-            "object",
-            "sorted",
-            "bin",
-            "enumerate",
-            "input",
-            "oct",
-            "staticmethod",
-            "bool",
-            "eval",
-            "int",
-            "open",
-            "str",
-            "breakpoint",
-            "exec",
-            "isinstance",
-            "ord",
-            "sum",
-            "bytearray",
-            "filter",
-            "issubclass",
-            "pow",
-            "super",
-            "bytes",
-            "float",
-            "iter",
-            "print",
-            "tuple",
-            "callable",
-            "format",
-            "len",
-            "property",
-            "type",
-            "chr",
-            "frozenset",
-            "list",
-            "range",
-            "vars",
-            "classmethod",
-            "getattr",
-            "locals",
-            "repr",
-            "zip",
-            "compile",
-            "globals",
-            "map",
-            "reversed",
-            "__import__",
-            "complex",
-            "hasattr",
-            "max",
-            "round",
-        ]
-
         # For python built-in functions (zip, map, filter, enumerate, etc.), they did not get their own page and instead are all on one page.
         # So the only thing we needed to set was the page anchor
-        if reference in builtin_functions:
+        if reference in DATASTORE["builtin_functions"]:
             link = f"https://docs.python.org/3/library/functions.html#{reference}"
         # If the reference was not a built-in function attempt to create a link with the full module name, ex. `pathlib.Path`.
         # This serves 2 purposes: first to accomadate modules names that don't include class, and second for things like `os.path`
@@ -269,7 +201,8 @@ def _get_links_to_python_docs(needed_references):
 
     # Loop over each term that was requested by user and get the docs link
     all_links = [
-        _library_reference_docs(reference) + _language_reference_docs(reference)
+        _library_reference_docs(reference) +
+        _language_reference_docs(reference)
         for reference in needed_references
     ]
 
@@ -282,9 +215,9 @@ if __name__ == "__main__":
         try:
             LOGGER.info("Python Documentation Bot is Starting Up.")
             main()
-        except Exception as e:
-            LOGGER.error("Something happened. Starting over! Error: %s", e)
-            continue
         except (KeyboardInterrupt, SystemExit):
             LOGGER.info("Good Bye!")
             raise SystemExit
+        except Exception as e:  # pylint:disable=broad-except
+            LOGGER.error("Something happened. Starting over! Error: %s", e)
+            continue
