@@ -119,7 +119,9 @@ def monitor_and_reply_to_comments(subreddit):
                 .replace(" ", "")
                 .split(",")
             )
-            all_links = _get_links_to_python_docs(needed_references)
+            # Filter out empty strings for queries that returned no results
+            all_links = [link for link in _get_links_to_python_docs(
+                needed_references) if link]
 
             if all_links:
                 bot_reply = _format_comment()

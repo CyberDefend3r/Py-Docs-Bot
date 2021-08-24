@@ -1,3 +1,4 @@
 credentials.ini
 .google-cookie
 .mypy_cache
+.vscode
