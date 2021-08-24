@@ -2,7 +2,7 @@ from json import loads, dumps
 from pathlib import Path
 from requests_html import HTMLSession
 
-data_path = Path.cwd() / "datastore.json"
+data_path = Path.cwd() / "datastore" / "datastore.json"
 with open(data_path, "r") as datastore_file:
     datastore = loads(datastore_file.read())
 
@@ -28,10 +28,12 @@ for doc_url in doc_full_url:
             datastore["docs_sections"].append(
                 {
                     "title": "".join(
-                        response.html.xpath(
-                            f'//*[@id="{dict(div.attrs)["id"]}"]/h1/text()'
-                        )
-                    ),
+                        response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}"]/h1/a')[
+                            0
+                        ].attrs["href"]
+                    )
+                    .replace("-", " ")
+                    .replace("#", ""),
                     "link": base_link
                     + response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}"]/h1/a')[
                         0
@@ -43,8 +45,12 @@ for doc_url in doc_full_url:
             datastore["docs_sections"].append(
                 {
                     "title": "".join(
-                        response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}')
-                    ).replace("-", " "),
+                        response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}"]/h2/a')[
+                            0
+                        ].attrs["href"]
+                    )
+                    .replace("-", " ")
+                    .replace("#", ""),
                     "link": base_link
                     + response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}"]/h2/a')[
                         0
@@ -56,10 +62,12 @@ for doc_url in doc_full_url:
             datastore["docs_sections"].append(
                 {
                     "title": "".join(
-                        response.html.xpath(
-                            f'//*[@id="{dict(div.attrs)["id"]}"]/h3/text()'
-                        )
-                    ),
+                        response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}"]/h3/a')[
+                            0
+                        ].attrs["href"]
+                    )
+                    .replace("-", " ")
+                    .replace("#", ""),
                     "link": base_link
                     + response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}"]/h3/a')[
                         0
@@ -71,10 +79,12 @@ for doc_url in doc_full_url:
             datastore["docs_sections"].append(
                 {
                     "title": "".join(
-                        response.html.xpath(
-                            f'//*[@id="{dict(div.attrs)["id"]}"]/h4/text()'
-                        )
-                    ),
+                        response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}"]/h4/a')[
+                            0
+                        ].attrs["href"]
+                    )
+                    .replace("-", " ")
+                    .replace("#", ""),
                     "link": base_link
                     + response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}"]/h4/a')[
                         0

@@ -105,6 +105,7 @@ def monitor_and_reply_to_comments(subreddit):
                 .replace(" ", "")
                 .split(",")
             )
+
             # Filter out empty strings for queries that returned no results
             all_links = [
                 link for link in _get_links_to_python_docs(needed_references) if link
@@ -136,10 +137,10 @@ def _get_links_to_python_docs(needed_references):
         matched_references = []
 
         for reference_entry in DATASTORE["docs_sections"]:
-
+            print(reference_entry["title"])
             match_ratio = fuzz.token_set_ratio(reference_entry["title"], reference)
-
-            if match_ratio > 85:
+            print(match_ratio)
+            if match_ratio > 80:
                 matched_references.append(
                     f'[{reference_entry["title"]} - {reference_entry["link"]}]({reference_entry["link"]})  \n'
                 )
