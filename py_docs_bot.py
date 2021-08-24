@@ -86,21 +86,6 @@ def monitor_and_reply_to_comments(subreddit):
     If found parse the topics out and retrive related links to documentation and post a reply with the links.
     """
 
-    def _format_comment():
-        """
-        Build the comment that will have all of the reference links in markdown format.
-        """
-
-        comment_markdown = ""
-
-        for link in all_links:
-
-            comment_markdown += link  # pylint:disable=consider-using-join
-
-        comment_markdown += "  \nPython Documentation Bot - *[How To Use](https://github.com/trevormiller6/Py-Docs-Bot)*"
-
-        return comment_markdown
-
     LOGGER.info("Monitoring r/learnpython comments for keyword '!docs'")
 
     # Loop over comment objects returned from reddit. skip_existing=True means that when the bot
@@ -124,9 +109,9 @@ def monitor_and_reply_to_comments(subreddit):
             ]
 
             if all_links:
-                bot_reply = _format_comment()
-                comment.reply(bot_reply)
-                LOGGER.info("Replied to a comment: %s", repr(bot_reply))
+                comment_markdown = f"{''.join(all_links)}  \nPython Documentation Bot - *[How To Use](https://github.com/trevormiller6/Py-Docs-Bot)*"
+                comment.reply(comment_markdown)
+                LOGGER.info("Replied to a comment: %s", repr(comment_markdown))
             else:
                 LOGGER.error(
                     "The request was not valid no response sent. Requested docs: %s",
