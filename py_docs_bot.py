@@ -52,8 +52,7 @@ def main():
         reddit_username = config["reddit"]["username"]
         reddit_password = config["reddit"]["password"]
     except Exception:  # pylint:disable=broad-except
-        LOGGER.error(
-            "No credentials.ini file found. Checking environment variables.")
+        LOGGER.error("No credentials.ini file found. Checking environment variables.")
         # Failed to get creds from file so lets check the environment variables.
         try:
             reddit_api_id = environ["REDDIT_DOC_BOT_ID"]
@@ -120,8 +119,9 @@ def monitor_and_reply_to_comments(subreddit):
                 .split(",")
             )
             # Filter out empty strings for queries that returned no results
-            all_links = [link for link in _get_links_to_python_docs(
-                needed_references) if link]
+            all_links = [
+                link for link in _get_links_to_python_docs(needed_references) if link
+            ]
 
             if all_links:
                 bot_reply = _format_comment()
@@ -150,8 +150,7 @@ def _get_links_to_python_docs(needed_references):
 
         for reference_entry in DATASTORE["python_ref_docs_url_data"]:
 
-            match_ratio = fuzz.token_set_ratio(
-                reference_entry["title"], reference)
+            match_ratio = fuzz.token_set_ratio(reference_entry["title"], reference)
 
             if match_ratio > 85:
                 matched_references.append(
@@ -203,8 +202,7 @@ def _get_links_to_python_docs(needed_references):
 
     # Loop over each term that was requested by user and get the docs link
     all_links = [
-        _library_reference_docs(reference) +
-        _language_reference_docs(reference)
+        _library_reference_docs(reference) + _language_reference_docs(reference)
         for reference in needed_references
     ]
 
