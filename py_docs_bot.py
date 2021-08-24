@@ -14,6 +14,7 @@ import configparser
 from json import loads
 import logging
 from os import environ
+from pathlib import Path
 import re
 import requests
 from fuzzywuzzy import fuzz
@@ -30,7 +31,8 @@ LOGGER = logging.getLogger("py_docs_bot")
 # Making this variable a global so that it doesnt open and close the file
 # everytime it needs it needs the data in the functions that require it
 try:
-    with open("datastore.json", "r") as datastore_file:
+    datastore_path = Path.cwd() / "Datastore" / "datastore.json"
+    with open(datastore_path, "r") as datastore_file:
         DATASTORE = loads(datastore_file.read())
     LOGGER.info("Set global variable 'DATASTORE' from file: datastore.json.")
 except Exception as e:
@@ -133,13 +135,13 @@ def _get_links_to_python_docs(needed_references):
 
         matched_references = []
 
-        for reference_entry in DATASTORE["python_ref_docs_url_data"]:
+        for reference_entry in DATASTORE["docs_sections"]:
 
             match_ratio = fuzz.token_set_ratio(reference_entry["title"], reference)
 
             if match_ratio > 85:
                 matched_references.append(
-                    f'[{reference_entry["title"]} - {DATASTORE["python_ref_docs_base_url"]}{reference_entry["link"]}]({DATASTORE["python_ref_docs_base_url"]}{reference_entry["link"]})  \n'
+                    f'[{reference_entry["title"]} - {reference_entry["link"]}]({reference_entry["link"]})  \n'
                 )
 
         return "".join(matched_references) if matched_references else ""
