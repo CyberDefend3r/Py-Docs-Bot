@@ -1,7 +1,9 @@
 from json import loads, dumps
+from pathlib import Path
 from requests_html import HTMLSession
 
-with open("datastore.json", "r") as datastore_file:
+data_path = Path.cwd() / "datastore.json"
+with open(data_path, "r") as datastore_file:
     datastore = loads(datastore_file.read())
 
 datastore_url = datastore["docs_base"]
@@ -41,10 +43,8 @@ for doc_url in doc_full_url:
             datastore["docs_sections"].append(
                 {
                     "title": "".join(
-                        response.html.xpath(
-                            f'//*[@id="{dict(div.attrs)["id"]}"]/h2/text()'
-                        )
-                    ),
+                        response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}')
+                    ).replace("-", " "),
                     "link": base_link
                     + response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}"]/h2/a')[
                         0
