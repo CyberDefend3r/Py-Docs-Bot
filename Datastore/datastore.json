@@ -33,43 +33,7 @@
             "link": "https://docs.python.org/3/reference/lexical_analysis.html#line-structure"
         },
         {
-            "title": "logical lines",
-            "link": "https://docs.python.org/3/reference/lexical_analysis.html#logical-lines"
-        },
-        {
-            "title": "physical lines",
-            "link": "https://docs.python.org/3/reference/lexical_analysis.html#physical-lines"
-        },
-        {
-            "title": "comments",
-            "link": "https://docs.python.org/3/reference/lexical_analysis.html#comments"
-        },
-        {
-            "title": "encoding declarations",
-            "link": "https://docs.python.org/3/reference/lexical_analysis.html#encoding-declarations"
-        },
-        {
-            "title": "explicit line joining",
-            "link": "https://docs.python.org/3/reference/lexical_analysis.html#explicit-line-joining"
-        },
-        {
-            "title": "implicit line joining",
-            "link": "https://docs.python.org/3/reference/lexical_analysis.html#implicit-line-joining"
-        },
-        {
-            "title": "blank lines",
-            "link": "https://docs.python.org/3/reference/lexical_analysis.html#blank-lines"
-        },
-        {
-            "title": "indentation",
-            "link": "https://docs.python.org/3/reference/lexical_analysis.html#indentation"
-        },
-        {
-            "title": "whitespace between tokens",
-            "link": "https://docs.python.org/3/reference/lexical_analysis.html#whitespace-between-tokens"
-        },
-        {
-            "title": "other tokens",
+            "title": "or tokens",
             "link": "https://docs.python.org/3/reference/lexical_analysis.html#other-tokens"
         },
         {
@@ -77,44 +41,8 @@
             "link": "https://docs.python.org/3/reference/lexical_analysis.html#identifiers"
         },
         {
-            "title": "keywords",
-            "link": "https://docs.python.org/3/reference/lexical_analysis.html#keywords"
-        },
-        {
-            "title": "reserved classes of identifiers",
-            "link": "https://docs.python.org/3/reference/lexical_analysis.html#reserved-classes-of-identifiers"
-        },
-        {
             "title": "literals",
             "link": "https://docs.python.org/3/reference/lexical_analysis.html#literals"
-        },
-        {
-            "title": "string and bytes literals",
-            "link": "https://docs.python.org/3/reference/lexical_analysis.html#string-and-bytes-literals"
-        },
-        {
-            "title": "string literal concatenation",
-            "link": "https://docs.python.org/3/reference/lexical_analysis.html#string-literal-concatenation"
-        },
-        {
-            "title": "formatted string literals",
-            "link": "https://docs.python.org/3/reference/lexical_analysis.html#formatted-string-literals"
-        },
-        {
-            "title": "numeric literals",
-            "link": "https://docs.python.org/3/reference/lexical_analysis.html#numeric-literals"
-        },
-        {
-            "title": "integer literals",
-            "link": "https://docs.python.org/3/reference/lexical_analysis.html#integer-literals"
-        },
-        {
-            "title": "floating point literals",
-            "link": "https://docs.python.org/3/reference/lexical_analysis.html#floating-point-literals"
-        },
-        {
-            "title": "imaginary literals",
-            "link": "https://docs.python.org/3/reference/lexical_analysis.html#imaginary-literals"
         },
         {
             "title": "operators",
@@ -133,7 +61,7 @@
             "link": "https://docs.python.org/3/reference/datamodel.html#objects-values-and-types"
         },
         {
-            "title": "the standard type hierarchy",
+            "title": " standard type hierarchy",
             "link": "https://docs.python.org/3/reference/datamodel.html#the-standard-type-hierarchy"
         },
         {
@@ -141,108 +69,8 @@
             "link": "https://docs.python.org/3/reference/datamodel.html#special-method-names"
         },
         {
-            "title": "basic customization",
-            "link": "https://docs.python.org/3/reference/datamodel.html#basic-customization"
-        },
-        {
-            "title": "customizing attribute access",
-            "link": "https://docs.python.org/3/reference/datamodel.html#customizing-attribute-access"
-        },
-        {
-            "title": "customizing module attribute access",
-            "link": "https://docs.python.org/3/reference/datamodel.html#customizing-module-attribute-access"
-        },
-        {
-            "title": "implementing descriptors",
-            "link": "https://docs.python.org/3/reference/datamodel.html#implementing-descriptors"
-        },
-        {
-            "title": "invoking descriptors",
-            "link": "https://docs.python.org/3/reference/datamodel.html#invoking-descriptors"
-        },
-        {
-            "title": "slots",
-            "link": "https://docs.python.org/3/reference/datamodel.html#slots"
-        },
-        {
-            "title": "customizing class creation",
-            "link": "https://docs.python.org/3/reference/datamodel.html#customizing-class-creation"
-        },
-        {
-            "title": "metaclasses",
-            "link": "https://docs.python.org/3/reference/datamodel.html#metaclasses"
-        },
-        {
-            "title": "resolving mro entries",
-            "link": "https://docs.python.org/3/reference/datamodel.html#resolving-mro-entries"
-        },
-        {
-            "title": "determining the appropriate metaclass",
-            "link": "https://docs.python.org/3/reference/datamodel.html#determining-the-appropriate-metaclass"
-        },
-        {
-            "title": "preparing the class namespace",
-            "link": "https://docs.python.org/3/reference/datamodel.html#preparing-the-class-namespace"
-        },
-        {
-            "title": "executing the class body",
-            "link": "https://docs.python.org/3/reference/datamodel.html#executing-the-class-body"
-        },
-        {
-            "title": "creating the class object",
-            "link": "https://docs.python.org/3/reference/datamodel.html#creating-the-class-object"
-        },
-        {
-            "title": "uses metaclasses",
-            "link": "https://docs.python.org/3/reference/datamodel.html#uses-for-metaclasses"
-        },
-        {
-            "title": "customizing instance and subclass checks",
-            "link": "https://docs.python.org/3/reference/datamodel.html#customizing-instance-and-subclass-checks"
-        },
-        {
-            "title": "emulating generic types",
-            "link": "https://docs.python.org/3/reference/datamodel.html#emulating-generic-types"
-        },
-        {
-            "title": "emulating callable objects",
-            "link": "https://docs.python.org/3/reference/datamodel.html#emulating-callable-objects"
-        },
-        {
-            "title": "emulating container types",
-            "link": "https://docs.python.org/3/reference/datamodel.html#emulating-container-types"
-        },
-        {
-            "title": "emulating numeric types",
-            "link": "https://docs.python.org/3/reference/datamodel.html#emulating-numeric-types"
-        },
-        {
-            "title": "with statement context managers",
-            "link": "https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers"
-        },
-        {
-            "title": "special method lookup",
-            "link": "https://docs.python.org/3/reference/datamodel.html#special-method-lookup"
-        },
-        {
             "title": "coroutines",
             "link": "https://docs.python.org/3/reference/datamodel.html#coroutines"
-        },
-        {
-            "title": "awaitable objects",
-            "link": "https://docs.python.org/3/reference/datamodel.html#awaitable-objects"
-        },
-        {
-            "title": "coroutine objects",
-            "link": "https://docs.python.org/3/reference/datamodel.html#coroutine-objects"
-        },
-        {
-            "title": "asynchronous iterators",
-            "link": "https://docs.python.org/3/reference/datamodel.html#asynchronous-iterators"
-        },
-        {
-            "title": "asynchronous context managers",
-            "link": "https://docs.python.org/3/reference/datamodel.html#asynchronous-context-managers"
         },
         {
             "title": "execution model",
@@ -257,27 +85,11 @@
             "link": "https://docs.python.org/3/reference/executionmodel.html#naming-and-binding"
         },
         {
-            "title": "binding of names",
-            "link": "https://docs.python.org/3/reference/executionmodel.html#binding-of-names"
-        },
-        {
-            "title": "resolution of names",
-            "link": "https://docs.python.org/3/reference/executionmodel.html#resolution-of-names"
-        },
-        {
-            "title": "builtins and restricted execution",
-            "link": "https://docs.python.org/3/reference/executionmodel.html#builtins-and-restricted-execution"
-        },
-        {
-            "title": "interaction dynamic features",
-            "link": "https://docs.python.org/3/reference/executionmodel.html#interaction-with-dynamic-features"
-        },
-        {
             "title": "exceptions",
             "link": "https://docs.python.org/3/reference/executionmodel.html#exceptions"
         },
         {
-            "title": "the import system",
+            "title": " import system",
             "link": "https://docs.python.org/3/reference/import.html#the-import-system"
         },
         {
@@ -289,79 +101,19 @@
             "link": "https://docs.python.org/3/reference/import.html#packages"
         },
         {
-            "title": "regular packages",
-            "link": "https://docs.python.org/3/reference/import.html#regular-packages"
-        },
-        {
-            "title": "namespace packages",
-            "link": "https://docs.python.org/3/reference/import.html#namespace-packages"
-        },
-        {
             "title": "searching",
             "link": "https://docs.python.org/3/reference/import.html#searching"
-        },
-        {
-            "title": "the module cache",
-            "link": "https://docs.python.org/3/reference/import.html#the-module-cache"
-        },
-        {
-            "title": "finders and loaders",
-            "link": "https://docs.python.org/3/reference/import.html#finders-and-loaders"
-        },
-        {
-            "title": "import hooks",
-            "link": "https://docs.python.org/3/reference/import.html#import-hooks"
-        },
-        {
-            "title": "the meta path",
-            "link": "https://docs.python.org/3/reference/import.html#the-meta-path"
         },
         {
             "title": "loading",
             "link": "https://docs.python.org/3/reference/import.html#loading"
         },
         {
-            "title": "loaders",
-            "link": "https://docs.python.org/3/reference/import.html#loaders"
-        },
-        {
-            "title": "submodules",
-            "link": "https://docs.python.org/3/reference/import.html#submodules"
-        },
-        {
-            "title": "module spec",
-            "link": "https://docs.python.org/3/reference/import.html#module-spec"
-        },
-        {
-            "title": "import related module attributes",
-            "link": "https://docs.python.org/3/reference/import.html#import-related-module-attributes"
-        },
-        {
-            "title": "module path",
-            "link": "https://docs.python.org/3/reference/import.html#module-path"
-        },
-        {
-            "title": "module reprs",
-            "link": "https://docs.python.org/3/reference/import.html#module-reprs"
-        },
-        {
-            "title": "cached bytecode invalidation",
-            "link": "https://docs.python.org/3/reference/import.html#cached-bytecode-invalidation"
-        },
-        {
-            "title": "the path based finder",
+            "title": " path based finder",
             "link": "https://docs.python.org/3/reference/import.html#the-path-based-finder"
         },
         {
-            "title": "path entry finders",
-            "link": "https://docs.python.org/3/reference/import.html#path-entry-finders"
-        },
-        {
-            "title": "path entry finder protocol",
-            "link": "https://docs.python.org/3/reference/import.html#path-entry-finder-protocol"
-        },
-        {
-            "title": "replacing the standard import system",
+            "title": "replacing  standard import system",
             "link": "https://docs.python.org/3/reference/import.html#replacing-the-standard-import-system"
         },
         {
@@ -371,10 +123,6 @@
         {
             "title": "special considerations main",
             "link": "https://docs.python.org/3/reference/import.html#special-considerations-for-main"
-        },
-        {
-            "title": "main spec",
-            "link": "https://docs.python.org/3/reference/import.html#main-spec"
         },
         {
             "title": "open issues",
@@ -397,83 +145,15 @@
             "link": "https://docs.python.org/3/reference/expressions.html#atoms"
         },
         {
-            "title": "atom identifiers",
-            "link": "https://docs.python.org/3/reference/expressions.html#atom-identifiers"
-        },
-        {
-            "title": "literals",
-            "link": "https://docs.python.org/3/reference/expressions.html#literals"
-        },
-        {
-            "title": "parenthesized forms",
-            "link": "https://docs.python.org/3/reference/expressions.html#parenthesized-forms"
-        },
-        {
-            "title": "displays lists sets and dictionaries",
-            "link": "https://docs.python.org/3/reference/expressions.html#displays-for-lists-sets-and-dictionaries"
-        },
-        {
-            "title": "list displays",
-            "link": "https://docs.python.org/3/reference/expressions.html#list-displays"
-        },
-        {
-            "title": "set displays",
-            "link": "https://docs.python.org/3/reference/expressions.html#set-displays"
-        },
-        {
-            "title": "dictionary displays",
-            "link": "https://docs.python.org/3/reference/expressions.html#dictionary-displays"
-        },
-        {
-            "title": "generator expressions",
-            "link": "https://docs.python.org/3/reference/expressions.html#generator-expressions"
-        },
-        {
-            "title": "yield expressions",
-            "link": "https://docs.python.org/3/reference/expressions.html#yield-expressions"
-        },
-        {
-            "title": "generator iterator methods",
-            "link": "https://docs.python.org/3/reference/expressions.html#generator-iterator-methods"
-        },
-        {
-            "title": "examples",
-            "link": "https://docs.python.org/3/reference/expressions.html#examples"
-        },
-        {
-            "title": "asynchronous generator functions",
-            "link": "https://docs.python.org/3/reference/expressions.html#asynchronous-generator-functions"
-        },
-        {
-            "title": "asynchronous generator iterator methods",
-            "link": "https://docs.python.org/3/reference/expressions.html#asynchronous-generator-iterator-methods"
-        },
-        {
             "title": "primaries",
             "link": "https://docs.python.org/3/reference/expressions.html#primaries"
-        },
-        {
-            "title": "attribute references",
-            "link": "https://docs.python.org/3/reference/expressions.html#attribute-references"
-        },
-        {
-            "title": "subscriptions",
-            "link": "https://docs.python.org/3/reference/expressions.html#subscriptions"
-        },
-        {
-            "title": "slicings",
-            "link": "https://docs.python.org/3/reference/expressions.html#slicings"
-        },
-        {
-            "title": "calls",
-            "link": "https://docs.python.org/3/reference/expressions.html#calls"
         },
         {
             "title": "await expression",
             "link": "https://docs.python.org/3/reference/expressions.html#await-expression"
         },
         {
-            "title": "the power operator",
+            "title": " power operator",
             "link": "https://docs.python.org/3/reference/expressions.html#the-power-operator"
         },
         {
@@ -495,18 +175,6 @@
         {
             "title": "comparisons",
             "link": "https://docs.python.org/3/reference/expressions.html#comparisons"
-        },
-        {
-            "title": "value comparisons",
-            "link": "https://docs.python.org/3/reference/expressions.html#value-comparisons"
-        },
-        {
-            "title": "membership test operations",
-            "link": "https://docs.python.org/3/reference/expressions.html#membership-test-operations"
-        },
-        {
-            "title": "is not",
-            "link": "https://docs.python.org/3/reference/expressions.html#is-not"
         },
         {
             "title": "boolean operations",
@@ -549,59 +217,47 @@
             "link": "https://docs.python.org/3/reference/simple_stmts.html#assignment-statements"
         },
         {
-            "title": "augmented assignment statements",
-            "link": "https://docs.python.org/3/reference/simple_stmts.html#augmented-assignment-statements"
-        },
-        {
-            "title": "annotated assignment statements",
-            "link": "https://docs.python.org/3/reference/simple_stmts.html#annotated-assignment-statements"
-        },
-        {
-            "title": "the assert statement",
+            "title": " assert statement",
             "link": "https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement"
         },
         {
-            "title": "the pass statement",
+            "title": " pass statement",
             "link": "https://docs.python.org/3/reference/simple_stmts.html#the-pass-statement"
         },
         {
-            "title": "the del statement",
+            "title": " del statement",
             "link": "https://docs.python.org/3/reference/simple_stmts.html#the-del-statement"
         },
         {
-            "title": "the return statement",
+            "title": " return statement",
             "link": "https://docs.python.org/3/reference/simple_stmts.html#the-return-statement"
         },
         {
-            "title": "the yield statement",
+            "title": " yield statement",
             "link": "https://docs.python.org/3/reference/simple_stmts.html#the-yield-statement"
         },
         {
-            "title": "the raise statement",
+            "title": " raise statement",
             "link": "https://docs.python.org/3/reference/simple_stmts.html#the-raise-statement"
         },
         {
-            "title": "the break statement",
+            "title": " break statement",
             "link": "https://docs.python.org/3/reference/simple_stmts.html#the-break-statement"
         },
         {
-            "title": "the continue statement",
+            "title": " continue statement",
             "link": "https://docs.python.org/3/reference/simple_stmts.html#the-continue-statement"
         },
         {
-            "title": "the import statement",
+            "title": " import statement",
             "link": "https://docs.python.org/3/reference/simple_stmts.html#the-import-statement"
         },
         {
-            "title": "future statements",
-            "link": "https://docs.python.org/3/reference/simple_stmts.html#future-statements"
-        },
-        {
-            "title": "the global statement",
+            "title": " global statement",
             "link": "https://docs.python.org/3/reference/simple_stmts.html#the-global-statement"
         },
         {
-            "title": "the nonlocal statement",
+            "title": " nonlocal statement",
             "link": "https://docs.python.org/3/reference/simple_stmts.html#the-nonlocal-statement"
         },
         {
@@ -609,23 +265,23 @@
             "link": "https://docs.python.org/3/reference/compound_stmts.html#compound-statements"
         },
         {
-            "title": "the if statement",
+            "title": " if statement",
             "link": "https://docs.python.org/3/reference/compound_stmts.html#the-if-statement"
         },
         {
-            "title": "the while statement",
+            "title": " while statement",
             "link": "https://docs.python.org/3/reference/compound_stmts.html#the-while-statement"
         },
         {
-            "title": "the for statement",
+            "title": " for statement",
             "link": "https://docs.python.org/3/reference/compound_stmts.html#the-for-statement"
         },
         {
-            "title": "the try statement",
+            "title": " try statement",
             "link": "https://docs.python.org/3/reference/compound_stmts.html#the-try-statement"
         },
         {
-            "title": "the with statement",
+            "title": " with statement",
             "link": "https://docs.python.org/3/reference/compound_stmts.html#the-with-statement"
         },
         {
@@ -639,18 +295,6 @@
         {
             "title": "coroutines",
             "link": "https://docs.python.org/3/reference/compound_stmts.html#coroutines"
-        },
-        {
-            "title": "coroutine function definition",
-            "link": "https://docs.python.org/3/reference/compound_stmts.html#coroutine-function-definition"
-        },
-        {
-            "title": "the async for statement",
-            "link": "https://docs.python.org/3/reference/compound_stmts.html#the-async-for-statement"
-        },
-        {
-            "title": "the async with statement",
-            "link": "https://docs.python.org/3/reference/compound_stmts.html#the-async-with-statement"
         },
         {
             "title": "top level components",

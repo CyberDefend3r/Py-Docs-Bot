@@ -33,7 +33,8 @@ for doc_url in doc_full_url:
                         ].attrs["href"]
                     )
                     .replace("-", " ")
-                    .replace("#", ""),
+                    .replace("#", "")
+                    .replace("the", ""),
                     "link": base_link
                     + response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}"]/h1/a')[
                         0
@@ -50,7 +51,8 @@ for doc_url in doc_full_url:
                         ].attrs["href"]
                     )
                     .replace("-", " ")
-                    .replace("#", ""),
+                    .replace("#", "")
+                    .replace("the", ""),
                     "link": base_link
                     + response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}"]/h2/a')[
                         0
@@ -58,39 +60,41 @@ for doc_url in doc_full_url:
                 }
             )
 
-        if response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}"]/h3/a') != []:
-            datastore["docs_sections"].append(
-                {
-                    "title": "".join(
-                        response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}"]/h3/a')[
-                            0
-                        ].attrs["href"]
-                    )
-                    .replace("-", " ")
-                    .replace("#", ""),
-                    "link": base_link
-                    + response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}"]/h3/a')[
-                        0
-                    ].attrs["href"],
-                }
-            )
+        # if response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}"]/h3/a') != []:
+        #     datastore["docs_sections"].append(
+        #         {
+        #             "title": "".join(
+        #                 response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}"]/h3/a')[
+        #                     0
+        #                 ].attrs["href"]
+        #             )
+        #             .replace("-", " ")
+        #             .replace("#", "")
+        #             .replace("the", ""),
+        #             "link": base_link
+        #             + response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}"]/h3/a')[
+        #                 0
+        #             ].attrs["href"],
+        #         }
+        #     )
 
-        if response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}"]/h4/a') != []:
-            datastore["docs_sections"].append(
-                {
-                    "title": "".join(
-                        response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}"]/h4/a')[
-                            0
-                        ].attrs["href"]
-                    )
-                    .replace("-", " ")
-                    .replace("#", ""),
-                    "link": base_link
-                    + response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}"]/h4/a')[
-                        0
-                    ].attrs["href"],
-                }
-            )
+        # if response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}"]/h4/a') != []:
+        #     datastore["docs_sections"].append(
+        #         {
+        #             "title": "".join(
+        #                 response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}"]/h4/a')[
+        #                     0
+        #                 ].attrs["href"]
+        #             )
+        #             .replace("-", " ")
+        #             .replace("#", "")
+        #             .replace("the", ""),
+        #             "link": base_link
+        #             + response.html.xpath(f'//*[@id="{dict(div.attrs)["id"]}"]/h4/a')[
+        #                 0
+        #             ].attrs["href"],
+        #         }
+        #     )
 
 with open("datastore.json", "w") as datastore_file:
     datastore_file.write(dumps(datastore, indent=4))

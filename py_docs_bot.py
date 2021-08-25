@@ -92,15 +92,15 @@ def monitor_and_reply_to_comments(subreddit):
 
     # Loop over comment objects returned from reddit. skip_existing=True means that when the bot
     # starts it will not go back and get existing comments and instead start with new ones.
-    for comment in subreddit.stream.comments(skip_existing=True):
+    for comment in ["!docs objects"]:  # subreddit.stream.comments(skip_existing=True):
 
         # Check for keyword !docs in comment. If found get reference links from python documentatiom
         # Module paths are case sensitive.
         # command usage: !docs pathlib.Path, re.search, requests, zip
-        if bool(re.search(r"^\!docs.+$", comment.body, flags=re.MULTILINE)):
-            LOGGER.info("New command recieved: %s", repr(comment.body))
+        if bool(re.search(r"^\!docs.+$", comment, flags=re.MULTILINE)):
+            LOGGER.info("New command recieved: %s", repr(comment))
             needed_references = (
-                re.search(r"^\!docs\s(.+)$", comment.body, flags=re.MULTILINE)
+                re.search(r"^\!docs\s(.+)$", comment, flags=re.MULTILINE)
                 .group(1)
                 .replace(" ", "")
                 .split(",")
@@ -113,7 +113,7 @@ def monitor_and_reply_to_comments(subreddit):
 
             if all_links:
                 comment_markdown = f"{''.join(all_links)}  \nPython Documentation Bot - *[How To Use](https://github.com/trevormiller6/Py-Docs-Bot)*"
-                comment.reply(comment_markdown)
+                # comment.reply(comment_markdown)
                 LOGGER.info("Replied to a comment: %s", repr(comment_markdown))
             else:
                 LOGGER.error(
@@ -137,12 +137,12 @@ def _get_links_to_python_docs(needed_references):
         matched_references = []
 
         for reference_entry in DATASTORE["docs_sections"]:
-            print(reference_entry["title"])
+
             match_ratio = fuzz.token_set_ratio(reference_entry["title"], reference)
-            print(match_ratio)
-            if match_ratio > 80:
+
+            if match_ratio > 90:
                 matched_references.append(
-                    f'[{reference_entry["title"]} - {reference_entry["link"]}]({reference_entry["link"]})  \n'
+                    f'[{reference_entry["title"].title()} - {reference_entry["link"]}]({reference_entry["link"]})  \n'
                 )
 
         return "".join(matched_references) if matched_references else ""
@@ -154,15 +154,6 @@ def _get_links_to_python_docs(needed_references):
         but there is a little weirdness that we check for.
         """
 
-        def _is_link_valid(link):
-            """
-            Validate that the link created actually works.
-            """
-
-            link_results = requests.get(link)
-
-            return bool(link_results)
-
         # For python built-in functions (zip, map, filter, enumerate, etc.), they did not get their own page and instead are all on one page.
         # So the only thing we needed to set was the page anchor
         if reference in DATASTORE["builtin_functions"]:
@@ -173,7 +164,7 @@ def _get_links_to_python_docs(needed_references):
         else:
             link = f"https://docs.python.org/3/library/{reference}.html#{reference}"
 
-        if _is_link_valid(link):
+        if bool(requests.get(link)):
 
             return f"[{reference} - {link}]({link})  \n"
 
@@ -184,7 +175,11 @@ def _get_links_to_python_docs(needed_references):
         else:
             link = f"https://docs.python.org/3/library/{reference.split('.')[0]}.html#{reference}"
 
-            return f"[{reference} - {link}]({link})  \n" if _is_link_valid(link) else ""
+            return (
+                f"[{reference} - {link}]({link})  \n"
+                if bool(requests.get(link))
+                else ""
+            )
 
             # If all of the above failed then it most likely is not a python standard library or function or the user had a typo.
 
@@ -198,14 +193,14 @@ def _get_links_to_python_docs(needed_references):
 
 
 if __name__ == "__main__":
-
-    while True:
-        try:
-            LOGGER.info("Python Documentation Bot is Starting Up.")
-            main()
-        except (KeyboardInterrupt, SystemExit):
-            LOGGER.info("Good Bye!")
-            raise SystemExit
-        except Exception as e:  # pylint:disable=broad-except
-            LOGGER.error("Something happened. Starting over! Error: %s", e)
-            continue
+    main()
+    # while True:
+    #     try:
+    #         LOGGER.info("Python Documentation Bot is Starting Up.")
+    #         main()
+    #     except (KeyboardInterrupt, SystemExit):
+    #         LOGGER.info("Good Bye!")
+    #         raise SystemExit
+    #     except Exception as e:  # pylint:disable=broad-except
+    #         LOGGER.error("Something happened. Starting over! Error: %s", e)
+    #         continue
