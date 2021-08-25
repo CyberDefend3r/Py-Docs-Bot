@@ -92,15 +92,15 @@ def monitor_and_reply_to_comments(subreddit):
 
     # Loop over comment objects returned from reddit. skip_existing=True means that when the bot
     # starts it will not go back and get existing comments and instead start with new ones.
-    for comment in ["!docs objects"]:  # subreddit.stream.comments(skip_existing=True):
+    for comment in subreddit.stream.comments(skip_existing=True):
 
         # Check for keyword !docs in comment. If found get reference links from python documentatiom
         # Module paths are case sensitive.
         # command usage: !docs pathlib.Path, re.search, requests, zip
-        if bool(re.search(r"^\!docs.+$", comment, flags=re.MULTILINE)):
-            LOGGER.info("New command recieved: %s", repr(comment))
+        if bool(re.search(r"^\!docs.+$", comment.body, flags=re.MULTILINE)):
+            LOGGER.info("New command recieved: %s", repr(comment.body))
             needed_references = (
-                re.search(r"^\!docs\s(.+)$", comment, flags=re.MULTILINE)
+                re.search(r"^\!docs\s(.+)$", comment.body, flags=re.MULTILINE)
                 .group(1)
                 .replace(" ", "")
                 .split(",")
@@ -113,7 +113,7 @@ def monitor_and_reply_to_comments(subreddit):
 
             if all_links:
                 comment_markdown = f"{''.join(all_links)}  \nPython Documentation Bot - *[How To Use](https://github.com/trevormiller6/Py-Docs-Bot)*"
-                # comment.reply(comment_markdown)
+                comment.reply(comment_markdown)
                 LOGGER.info("Replied to a comment: %s", repr(comment_markdown))
             else:
                 LOGGER.error(
@@ -140,7 +140,7 @@ def _get_links_to_python_docs(needed_references):
 
             match_ratio = fuzz.token_set_ratio(reference_entry["title"], reference)
 
-            if match_ratio > 90:
+            if match_ratio > 85:
                 matched_references.append(
                     f'[{reference_entry["title"].title()} - {reference_entry["link"]}]({reference_entry["link"]})  \n'
                 )
@@ -193,14 +193,14 @@ def _get_links_to_python_docs(needed_references):
 
 
 if __name__ == "__main__":
-    main()
-    # while True:
-    #     try:
-    #         LOGGER.info("Python Documentation Bot is Starting Up.")
-    #         main()
-    #     except (KeyboardInterrupt, SystemExit):
-    #         LOGGER.info("Good Bye!")
-    #         raise SystemExit
-    #     except Exception as e:  # pylint:disable=broad-except
-    #         LOGGER.error("Something happened. Starting over! Error: %s", e)
-    #         continue
+
+    while True:
+        try:
+            LOGGER.info("Python Documentation Bot is Starting Up.")
+            main()
+        except (KeyboardInterrupt, SystemExit):
+            LOGGER.info("Good Bye!")
+            raise SystemExit
+        except Exception as e:  # pylint:disable=broad-except
+            LOGGER.error("Something happened. Starting over! Error: %s", e)
+            continue
