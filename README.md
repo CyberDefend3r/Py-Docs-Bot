@@ -12,7 +12,7 @@ All you need to do is use the `!docs` keyword followed by a comma seperated list
 ```
 !docs os.path, pathlib.Path
 ```   
-Returns links to os.path and pathlib.Path python library reference documentation.  
+Returns library reference documentation links to os.path and pathlib.Path.  
 ```  
 !docs function, class
 ```  
