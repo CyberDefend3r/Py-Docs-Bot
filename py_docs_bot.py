@@ -31,7 +31,7 @@ LOGGER = logging.getLogger("py_docs_bot")
 # Making this variable a global so that it doesnt open and close the file
 # everytime it needs it needs the data in the functions that require it
 try:
-    datastore_path = Path.cwd() / "Datastore" / "datastore.json"
+    datastore_path = Path.cwd() / "datastore" / "datastore.json"
     with open(datastore_path, "r") as datastore_file:
         DATASTORE = loads(datastore_file.read())
     LOGGER.info("Set global variable 'DATASTORE' from file: datastore.json.")
