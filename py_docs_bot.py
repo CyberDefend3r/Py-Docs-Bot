@@ -127,6 +127,40 @@ def _get_links_to_python_docs(needed_references):
     Get link to official python documentation.
     """
 
+    def _python_enhancement_proposals(reference):
+        """
+        Get links to python peps
+        """
+
+        reference = reference.lower()
+
+        # Python easter egg
+        # Just for fun
+        if reference in ["zen", "zenofpython", "pep-20"]:
+
+            return "[The Zen of Python:](https://www.python.org/dev/peps/pep-0020)  \n    import this\n  \n"
+
+        # Extract the pep number
+        try:
+            _, pep_number = reference.split("-")
+        except Exception:  # pylint:disable=broad-except
+            return ""
+
+        #  Make sure it is actually a number
+        try:
+            pep_number = int(pep_number)
+            pep_number = str(pep_number)
+        except ValueError:
+            return ""
+
+        # Pep numbers have 4 numbers in the url
+        while len(pep_number) < 4:
+            pep_number = f"0{pep_number}"
+
+        link = f"https://www.python.org/dev/peps/pep-{pep_number}"
+
+        return f"[{reference}]({link})  \n" if bool(requests.get(link)) else ""
+
     def _language_reference_docs(reference):
         """
         Get links to reference documentation from the python docs site.
@@ -138,7 +172,9 @@ def _get_links_to_python_docs(needed_references):
 
         for reference_entry in DATASTORE["docs_sections"]:
 
-            match_ratio = fuzz.token_set_ratio(reference_entry["title"], reference)
+            match_ratio = fuzz.token_set_ratio(
+                reference_entry["title"], reference.lower()
+            )
 
             if match_ratio > 85:
                 matched_references.append(
@@ -185,7 +221,9 @@ def _get_links_to_python_docs(needed_references):
 
     # Loop over each term that was requested by user and get the docs link
     all_links = [
-        _library_reference_docs(reference) + _language_reference_docs(reference)
+        _library_reference_docs(reference)
+        + _language_reference_docs(reference)
+        + _python_enhancement_proposals(reference)
         for reference in needed_references
     ]
 
