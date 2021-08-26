@@ -1,8 +1,8 @@
 """
 Python Documentation Bot for reddit.
 
-This reddit bot will monitor the /r/learnpython subreddit and when invoked by keyword will reply with links to
-python documentation for any python topic(s) requested.
+This reddit bot will monitor the /r/learnpython subreddit and when invoked by keyword
+will reply with links to python documentation for any python topic(s) requested.
 
 Creator: Trevor Miller
 GitHub: https://github.com/trevormiller6
@@ -97,7 +97,7 @@ def monitor_and_reply_to_comments(subreddit):
 
         # Check for keyword !docs in comment. If found get reference links from python documentatiom
         # Module paths are case sensitive.
-        # command usage: !docs pathlib.Path, re.search, requests, zip
+        # Command usage: !docs pathlib.Path, re.search, requests, zip
         if bool(re.search(r"^\!docs.+$", comment.body, flags=re.MULTILINE)):
             LOGGER.info("New command recieved: %s", repr(comment.body))
             needed_references = (
@@ -199,8 +199,7 @@ def _get_links_to_python_docs(needed_references):
         # If the reference was not a built-in function attempt to create a link with the full module name,
         # ex. `pathlib.Path`.
         # This serves 2 purposes: first to accomadate modules names that don't include class, and second
-        # for things like `os.path`
-        # that for some reason has its own page in the docs seprate from the `os` docs.
+        # for things like `os.path` that for some reason has its own page in the docs seprate from the `os` docs.
         else:
             link = f"https://docs.python.org/3/library/{reference}.html#{reference}"
 
@@ -211,9 +210,8 @@ def _get_links_to_python_docs(needed_references):
         # If after testing the above links to python documentation fails than there is one last url path to try.
         # This is actually the url path that most of the documentation will have.
         # Split on the `.` and grab the first item in the list which will be the library name ex. pathlib.Path
-        # becomes just pathlib
-        # which will be the name of the html file we want to go to. Then we use the full method path `pathlib.Path`
-        # for the page anchor
+        # becomes just pathlib which will be the name of the html file we want to go to. Then we use the full
+        # method path `pathlib.Path` for the page anchor
         else:
             link = f"https://docs.python.org/3/library/{reference.split('.')[0]}.html#{reference}"
 
