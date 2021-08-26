@@ -1,7 +1,8 @@
 """
 Python Documentation Bot for reddit.
 
-This reddit bot will monitor the /r/learnpython subreddit and when invoked by keyword will reply with links to python documentation for any python topic(s) requested.
+This reddit bot will monitor the /r/learnpython subreddit and when invoked by keyword will reply with links to
+python documentation for any python topic(s) requested.
 
 Creator: Trevor Miller
 GitHub: https://github.com/trevormiller6
@@ -190,12 +191,15 @@ def _get_links_to_python_docs(needed_references):
         but there is a little weirdness that we check for.
         """
 
-        # For python built-in functions (zip, map, filter, enumerate, etc.), they did not get their own page and instead are all on one page.
+        # For python built-in functions (zip, map, filter, enumerate, etc.), they did not get their own
+        # page and instead are all on one page.
         # So the only thing we needed to set was the page anchor
         if reference in DATASTORE["builtin_functions"]:
             link = f"https://docs.python.org/3/library/functions.html#{reference}"
-        # If the reference was not a built-in function attempt to create a link with the full module name, ex. `pathlib.Path`.
-        # This serves 2 purposes: first to accomadate modules names that don't include class, and second for things like `os.path`
+        # If the reference was not a built-in function attempt to create a link with the full module name,
+        # ex. `pathlib.Path`.
+        # This serves 2 purposes: first to accomadate modules names that don't include class, and second
+        # for things like `os.path`
         # that for some reason has its own page in the docs seprate from the `os` docs.
         else:
             link = f"https://docs.python.org/3/library/{reference}.html#{reference}"
@@ -206,8 +210,10 @@ def _get_links_to_python_docs(needed_references):
 
         # If after testing the above links to python documentation fails than there is one last url path to try.
         # This is actually the url path that most of the documentation will have.
-        # Split on the `.` and grab the first item in the list which will be the library name ex. pathlib.Path becomes just pathlib
-        # which will be the name of the html file we want to go to. Then we use the full method path `pathlib.Path` for the page anchor
+        # Split on the `.` and grab the first item in the list which will be the library name ex. pathlib.Path
+        # becomes just pathlib
+        # which will be the name of the html file we want to go to. Then we use the full method path `pathlib.Path`
+        # for the page anchor
         else:
             link = f"https://docs.python.org/3/library/{reference.split('.')[0]}.html#{reference}"
 
@@ -217,7 +223,8 @@ def _get_links_to_python_docs(needed_references):
                 else ""
             )
 
-            # If all of the above failed then it most likely is not a python standard library or function or the user had a typo.
+            # If all of the above failed then it most likely is not a python standard library or function
+            # or the user had a typo.
 
     # Loop over each term that was requested by user and get the docs link
     all_links = [
