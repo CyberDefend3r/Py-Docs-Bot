@@ -41,48 +41,6 @@ except Exception as e:
     raise SystemExit
 
 
-def main():
-    """
-    Main function to initalize reddit class and authenticate
-    """
-
-    # Try to get bot credentials from the file 'credentials.ini' located in script directory
-    try:
-        config = configparser.ConfigParser()
-        config.read("credentials.ini")
-        reddit_api_id = config["reddit"]["client_id"]
-        reddit_api_secret = config["reddit"]["client_secret"]
-        reddit_username = config["reddit"]["username"]
-        reddit_password = config["reddit"]["password"]
-    except Exception:  # pylint:disable=broad-except
-        LOGGER.error("No credentials.ini file found. Checking environment variables.")
-        # Failed to get creds from file so lets check the environment variables.
-        try:
-            reddit_api_id = environ["REDDIT_DOC_BOT_ID"]
-            reddit_api_secret = environ["REDDIT_DOC_BOT_SECRET"]
-            reddit_username = environ["REDDIT_DOC_BOT_USER"]
-            reddit_password = environ["REDDIT_DOC_BOT_PASSWORD"]
-        except KeyError:
-            LOGGER.critical("environment variables not found")
-            raise SystemExit
-
-    bot_user_agent = "(praw-python3.9) py_docs_bot - scanning comments in /r/learnpython and replying with python documentation links"
-    LOGGER.info("Authenticating to reddit")
-    # Instantiate reddit class and authenticate
-    reddit = praw.Reddit(
-        client_id=reddit_api_id,
-        client_secret=reddit_api_secret,
-        username=reddit_username,
-        password=reddit_password,
-        user_agent=bot_user_agent,
-    )
-    LOGGER.info("Authentication successfull to redit.com")
-    # Define subreddit to monitor
-    subreddit = reddit.subreddit("learnpython")
-    # Call function to start itterating through comments
-    monitor_and_reply_to_comments(subreddit)
-
-
 def monitor_and_reply_to_comments(subreddit):
     """
     Loop through comments from the learnpython subreddit and check for bot keyword.
@@ -97,7 +55,7 @@ def monitor_and_reply_to_comments(subreddit):
 
         # Check for keyword !docs in comment. If found get reference links from python documentatiom
         # Module paths are case sensitive.
-        # Command usage: !docs pathlib.Path, re.search, requests, zip
+        # Command usage: !docs pathlib.Path, re.search, zip, while
         if bool(re.search(r"^\!docs.+$", comment.body, flags=re.MULTILINE)):
             LOGGER.info("New command recieved: %s", repr(comment.body))
             needed_references = (
@@ -160,7 +118,11 @@ def _get_links_to_python_docs(needed_references):
 
         link = f"https://www.python.org/dev/peps/pep-{pep_number}"
 
-        return f"[{reference}]({link})  \n" if bool(requests.get(link)) else ""
+        return (
+            f"[{reference.upper()} - {link}]({link})  \n"
+            if bool(requests.get(link))
+            else ""
+        )
 
     def _language_reference_docs(reference):
         """
@@ -233,6 +195,48 @@ def _get_links_to_python_docs(needed_references):
     ]
 
     return all_links
+
+
+def main():
+    """
+    Main function to initalize reddit class and authenticate
+    """
+
+    # Try to get bot credentials from the file 'credentials.ini' located in script directory
+    try:
+        config = configparser.ConfigParser()
+        config.read("credentials.ini")
+        reddit_api_id = config["reddit"]["client_id"]
+        reddit_api_secret = config["reddit"]["client_secret"]
+        reddit_username = config["reddit"]["username"]
+        reddit_password = config["reddit"]["password"]
+    except Exception:  # pylint:disable=broad-except
+        LOGGER.error("No credentials.ini file found. Checking environment variables.")
+        # Failed to get creds from file so lets check the environment variables.
+        try:
+            reddit_api_id = environ["REDDIT_DOC_BOT_ID"]
+            reddit_api_secret = environ["REDDIT_DOC_BOT_SECRET"]
+            reddit_username = environ["REDDIT_DOC_BOT_USER"]
+            reddit_password = environ["REDDIT_DOC_BOT_PASSWORD"]
+        except KeyError:
+            LOGGER.critical("environment variables not found")
+            raise SystemExit
+
+    bot_user_agent = "(praw-python3.9) py_docs_bot - scanning comments in /r/learnpython and replying with python documentation links"
+    LOGGER.info("Authenticating to reddit")
+    # Instantiate reddit class and authenticate
+    reddit = praw.Reddit(
+        client_id=reddit_api_id,
+        client_secret=reddit_api_secret,
+        username=reddit_username,
+        password=reddit_password,
+        user_agent=bot_user_agent,
+    )
+    LOGGER.info("Authentication successfull to redit.com")
+    # Define subreddit to monitor
+    subreddit = reddit.subreddit("learnpython")
+    # Call function to start itterating through comments
+    monitor_and_reply_to_comments(subreddit)
 
 
 if __name__ == "__main__":
