@@ -14,4 +14,5 @@ COPY . ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 
-CMD python3 py_docs_bot.py
+CMD ["test.py"]
+ENTRYPOINT ["python3"]
