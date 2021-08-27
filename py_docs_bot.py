@@ -19,9 +19,12 @@ from pathlib import Path
 import re
 import requests
 from fuzzywuzzy import fuzz
+import google.cloud.logging
 import praw
 
 # Setup logging
+client = google.cloud.logging.Client()
+client.setup_logging()
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
