@@ -19,11 +19,13 @@ from pathlib import Path
 import re
 import requests
 from fuzzywuzzy import fuzz
-import google.cloud.logging
 import praw
+import google.cloud.logging
+
 
 # Setup logging
 client = google.cloud.logging.Client()
+client.get_default_handler()
 client.setup_logging()
 logging.basicConfig(
     level=logging.INFO,
