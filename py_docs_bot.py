@@ -24,15 +24,14 @@ import praw
 # import google.cloud.logging
 
 
-# Setup logging
-# client = google.cloud.logging.Client()
-# client.get_default_handler()
-# client.setup_logging()
-# logging.basicConfig(
-#     level=logging.INFO,
-#     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-# )
-# LOGGER = logging.getLogger("py_docs_bot")
+client = google.cloud.LOGGER.Client()
+client.get_default_handler()
+client.setup_logging()
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
+LOGGER = logging.getLogger("py_docs_bot")
 
 
 # Making this variable a global so that it doesnt open and close the file
@@ -41,9 +40,9 @@ try:
     datastore_path = Path.cwd() / "datastore" / "datastore.json"
     with open(datastore_path, "r") as datastore_file:
         DATASTORE = loads(datastore_file.read())
-    logging.info("Set global variable 'DATASTORE' from file: datastore.json.")
+    LOGGER.info("Set global variable 'DATASTORE' from file: datastore.json.")
 except Exception as e:
-    logging.error("Could not open file 'datastore.json'. %s", e)
+    LOGGER.error("Could not open file 'datastore.json'. %s", e)
     raise SystemExit
 
 
@@ -53,18 +52,18 @@ def monitor_and_reply_to_comments(subreddit):
     If found parse the topics out and retrive related links to documentation and post a reply with the links.
     """
 
-    logging.info("Monitoring r/learnpython comments for keyword '!docs'")
+    LOGGER.info("Monitoring r/learnpython comments for keyword '!docs'")
 
     # Loop over comment objects returned from reddit. skip_existing=True means that when the bot
     # starts it will not go back and get existing comments and instead start with new ones.
     for comment in subreddit.stream.comments(skip_existing=True):
-        logging.info(comment.body)
+        LOGGER.info(comment.body)
 
         # Check for keyword !docs in comment. If found get reference links from python documentatiom
         # Module paths are case sensitive.
         # Command usage: !docs pathlib.Path, re.search, zip, while
         if bool(re.search(r"^\!docs.+$", comment.body, flags=re.MULTILINE)):
-            logging.info("New command recieved: %s", repr(comment.body))
+            LOGGER.info("New command recieved: %s", repr(comment.body))
             needed_references = (
                 re.search(r"^\!docs\s(.+)$", comment.body, flags=re.MULTILINE)
                 .group(1)
@@ -80,9 +79,9 @@ def monitor_and_reply_to_comments(subreddit):
             if all_links:
                 comment_markdown = f"{''.join(all_links)}  \nPython Documentation Bot - *[How To Use](https://github.com/trevormiller6/Py-Docs-Bot)*"
                 comment.reply(comment_markdown)
-                logging.info("Replied to a comment: %s", repr(comment_markdown))
+                LOGGER.info("Replied to a comment: %s", repr(comment_markdown))
             else:
-                logging.error(
+                LOGGER.error(
                     "The request was not valid no response sent. Requested docs: %s",
                     needed_references,
                 )
@@ -218,7 +217,7 @@ def main():
         reddit_username = config["reddit"]["username"]
         reddit_password = config["reddit"]["password"]
     except Exception:  # pylint:disable=broad-except
-        logging.error("No credentials.ini file found. Checking environment variables.")
+        LOGGER.error("No credentials.ini file found. Checking environment variables.")
         # Failed to get creds from file so lets check the environment variables.
         try:
             reddit_api_id = environ["REDDIT_DOC_BOT_ID"]
@@ -226,11 +225,11 @@ def main():
             reddit_username = environ["REDDIT_DOC_BOT_USER"]
             reddit_password = environ["REDDIT_DOC_BOT_PASSWORD"]
         except KeyError:
-            logging.critical("environment variables not found")
+            LOGGER.critical("environment variables not found")
             raise SystemExit
 
     bot_user_agent = "(praw-python3.9) py_docs_bot - scanning comments in /r/learnpython and replying with python documentation links"
-    logging.info("Authenticating to reddit")
+    LOGGER.info("Authenticating to reddit")
     # Instantiate reddit class and authenticate
     reddit = praw.Reddit(
         client_id=reddit_api_id,
@@ -239,7 +238,8 @@ def main():
         password=reddit_password,
         user_agent=bot_user_agent,
     )
-    logging.info("Authentication successfull to redit.com")
+    LOGGER.info(reddit)
+    LOGGER.info("Authentication successfull to redit.com")
     # Define subreddit to monitor
     subreddit = reddit.subreddit("learnpython")
     # Call function to start itterating through comments
@@ -250,11 +250,11 @@ if __name__ == "__main__":
 
     while True:
         try:
-            logging.info("Python Documentation Bot is Starting Up.")
+            LOGGER.info("Python Documentation Bot is Starting Up.")
             main()
         except (KeyboardInterrupt, SystemExit):
-            logging.info("Good Bye!")
+            LOGGER.info("Good Bye!")
             raise SystemExit
         except Exception as e:  # pylint:disable=broad-except
-            logging.error("Something happened. Starting over! Error: %s", e)
+            LOGGER.error("Something happened. Starting over! Error: %s", e)
             continue
