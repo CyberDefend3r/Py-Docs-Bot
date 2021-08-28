@@ -204,6 +204,7 @@ def main():
 
     # Try to get bot credentials from the file 'credentials.ini' located in script directory
     try:
+        LOGGER.info("Loading credentials from credentials.ini file.")
         config = configparser.ConfigParser()
         config.read("credentials.ini")
         reddit_api_id = config["reddit"]["client_id"]
@@ -218,8 +219,11 @@ def main():
             reddit_api_secret = environ["REDDIT_DOC_BOT_SECRET"]
             reddit_username = environ["REDDIT_DOC_BOT_USER"]
             reddit_password = environ["REDDIT_DOC_BOT_PASSWORD"]
+            LOGGER.error("Credentials loaded from environment variables.")
         except KeyError:
-            LOGGER.critical("environment variables not found")
+            LOGGER.critical(
+                "No credentials found in config.ini file and environment variables were not found. EXITING!"
+            )
             raise SystemExit
 
     bot_user_agent = "(praw-python3.9) py_docs_bot - scanning comments in /r/learnpython and replying with python documentation links"
@@ -232,7 +236,6 @@ def main():
         password=reddit_password,
         user_agent=bot_user_agent,
     )
-    LOGGER.info(reddit)
     LOGGER.info("Authentication successfull to redit.com")
     # Define subreddit to monitor
     subreddit = reddit.subreddit("learnpython")
