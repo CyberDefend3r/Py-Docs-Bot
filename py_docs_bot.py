@@ -25,9 +25,9 @@ import praw
 
 
 # Setup logging
-client = google.cloud.logging.Client()
-client.get_default_handler()
-client.setup_logging()
+# client = google.cloud.logging.Client()
+# client.get_default_handler()
+# client.setup_logging()
 # logging.basicConfig(
 #     level=logging.INFO,
 #     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
