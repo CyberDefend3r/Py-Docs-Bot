@@ -16,8 +16,8 @@ from json import loads
 import logging
 from os import environ
 from pathlib import Path
-import re
-import requests
+from re import search, MULTILINE
+from requests import get
 from fuzzywuzzy import fuzz
 import praw
 
@@ -55,11 +55,11 @@ def monitor_and_reply_to_comments(subreddit):
 
         # Check for keyword !docs in comment. If found get reference links from python documentatiom
         # Module paths are case sensitive.
-        # Command usage: !docs pathlib.Path, re.search, zip, while
-        if bool(re.search(r"^\!docs.+$", comment.body, flags=re.MULTILINE)):
+        # Command usage: !docs pathlib.Path, re.search, zip, while, pep-8
+        if bool(search(r"^\!docs.+$", comment.body, flags=MULTILINE)):
             LOGGER.info("New command recieved: %s", repr(comment.body))
             needed_references = (
-                re.search(r"^\!docs\s(.+)$", comment.body, flags=re.MULTILINE)
+                search(r"^\!docs\s(.+)$", comment.body, flags=MULTILINE)
                 .group(1)
                 .replace(" ", "")
                 .split(",")
@@ -118,11 +118,7 @@ def _get_links_to_python_docs(needed_references):
 
         link = f"https://www.python.org/dev/peps/pep-{pep_number}"
 
-        return (
-            f"[{reference.upper()} - {link}]({link})  \n"
-            if bool(requests.get(link))
-            else ""
-        )
+        return f"[{reference.upper()} - {link}]({link})  \n" if bool(get(link)) else ""
 
     def _language_reference_docs(reference):
         """
@@ -165,7 +161,7 @@ def _get_links_to_python_docs(needed_references):
         else:
             link = f"https://docs.python.org/3/library/{reference}.html#{reference}"
 
-        if bool(requests.get(link)):
+        if bool(get(link)):
 
             return f"[{reference} - {link}]({link})  \n"
 
@@ -177,11 +173,7 @@ def _get_links_to_python_docs(needed_references):
         else:
             link = f"https://docs.python.org/3/library/{reference.split('.')[0]}.html#{reference}"
 
-            return (
-                f"[{reference} - {link}]({link})  \n"
-                if bool(requests.get(link))
-                else ""
-            )
+            return f"[{reference} - {link}]({link})  \n" if bool(get(link)) else ""
 
             # If all of the above failed then it most likely is not a python standard library or function
             # or the user had a typo.
