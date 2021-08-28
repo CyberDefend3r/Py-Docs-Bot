@@ -20,7 +20,8 @@ import re
 import requests
 from fuzzywuzzy import fuzz
 import praw
-import google.cloud.logging
+
+# import google.cloud.logging
 
 
 # Setup logging
