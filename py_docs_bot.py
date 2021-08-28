@@ -21,12 +21,7 @@ import requests
 from fuzzywuzzy import fuzz
 import praw
 
-# import google.cloud.logging
 
-
-client = google.cloud.LOGGER.Client()
-client.get_default_handler()
-client.setup_logging()
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
