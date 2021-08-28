@@ -52,7 +52,6 @@ def monitor_and_reply_to_comments(subreddit):
     # Loop over comment objects returned from reddit. skip_existing=True means that when the bot
     # starts it will not go back and get existing comments and instead start with new ones.
     for comment in subreddit.stream.comments(skip_existing=True):
-        LOGGER.info(comment.body)
 
         # Check for keyword !docs in comment. If found get reference links from python documentatiom
         # Module paths are case sensitive.
