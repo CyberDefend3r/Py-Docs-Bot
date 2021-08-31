@@ -97,7 +97,7 @@ def _get_links_to_python_docs(needed_references):
         # Just for fun
         if reference in ["zen", "zenofpython", "pep-20"]:
 
-            return "[The Zen of Python:](https://www.python.org/dev/peps/pep-0020)  \n    import this\n  \n"
+            return "[The Zen of Python](https://www.python.org/dev/peps/pep-0020)  \n\n    import this  \n\  n"
 
         # Extract the pep number
         try:
@@ -118,7 +118,7 @@ def _get_links_to_python_docs(needed_references):
 
         link = f"https://www.python.org/dev/peps/pep-{pep_number}"
 
-        return f"[{reference.upper()} - {link}]({link})  \n" if bool(get(link)) else ""
+        return f"[{reference.upper()}]({link})  \n  \n" if bool(get(link)) else ""
 
     def _language_reference_docs(reference):
         """
@@ -137,7 +137,7 @@ def _get_links_to_python_docs(needed_references):
 
             if match_ratio > 85:
                 matched_references.append(
-                    f'[{reference_entry["title"].title()} - {reference_entry["link"]}]({reference_entry["link"]})  \n'
+                    f'[{reference_entry["title"].title()}]({reference_entry["link"]})  \n  \n'
                 )
 
         return "".join(matched_references) if matched_references else ""
@@ -163,7 +163,7 @@ def _get_links_to_python_docs(needed_references):
 
         if bool(get(link)):
 
-            return f"[{reference} - {link}]({link})  \n"
+            return f"[{reference}]({link})  \n  \n"
 
         # If after testing the above links to python documentation fails than there is one last url path to try.
         # This is actually the url path that most of the documentation will have.
@@ -173,7 +173,7 @@ def _get_links_to_python_docs(needed_references):
         else:
             link = f"https://docs.python.org/3/library/{reference.split('.')[0]}.html#{reference}"
 
-            return f"[{reference} - {link}]({link})  \n" if bool(get(link)) else ""
+            return f"[{reference}]({link})  \n  \n" if bool(get(link)) else ""
 
             # If all of the above failed then it most likely is not a python standard library or function
             # or the user had a typo.
