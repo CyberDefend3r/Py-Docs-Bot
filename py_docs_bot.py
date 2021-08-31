@@ -97,7 +97,7 @@ def _get_links_to_python_docs(needed_references):
         # Just for fun
         if reference in ["zen", "zenofpython", "pep-20"]:
 
-            return "[The Zen of Python](https://www.python.org/dev/peps/pep-0020)  \n\n    import this  \n\  n"
+            return "[The Zen of Python](https://www.python.org/dev/peps/pep-0020)  \n\n    import this  \n  \n"
 
         # Extract the pep number
         try:
