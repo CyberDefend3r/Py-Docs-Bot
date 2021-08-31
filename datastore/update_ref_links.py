@@ -1,3 +1,7 @@
+"""
+Still a work in progress to automate this proccess
+"""
+
 from json import loads, dumps
 from pathlib import Path
 from requests_html import HTMLSession
