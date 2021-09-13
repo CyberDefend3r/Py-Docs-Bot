@@ -36,7 +36,7 @@ try:
     datastore_path = Path.cwd() / "datastore" / "datastore.json"
     with open(datastore_path, "r") as datastore_file:
         DATASTORE = loads(datastore_file.read())
-    LOGGER.info("Set global variable 'DATASTORE' from file: datastore.json.")
+    LOGGER.debug("Set global variable 'DATASTORE' from file: datastore.json.")
 except Exception as e:
     LOGGER.error("Could not open file 'datastore.json'. %s", e)
     raise SystemExit
@@ -113,13 +113,11 @@ class PyDocsBot:
         #  Make sure it is actually a number
         try:
             pep_number = int(pep_number)
-            pep_number = str(pep_number)
         except ValueError:
             return ""
 
-        # Pep numbers have 4 numbers in the url
-        while len(pep_number) < 4:
-            pep_number = f"0{pep_number}"
+        # Pep links have 4 numbers in the url so pad with leading zeros if needed
+        pep_number = f"{pep_number:04d}"
 
         link = f"https://www.python.org/dev/peps/pep-{pep_number}"
 
@@ -214,14 +212,15 @@ def main():
         reddit_username = config["reddit"]["username"]
         reddit_password = config["reddit"]["password"]
     except Exception:  # pylint:disable=broad-except
-        LOGGER.error("No credentials.ini file found. Checking environment variables.")
+        LOGGER.error("No credentials.ini file found.")
+        LOGGER.info("Checking environment variables for credentials.")
         # Failed to get creds from file so lets check the environment variables.
         try:
             reddit_api_id = environ["REDDIT_DOC_BOT_ID"]
             reddit_api_secret = environ["REDDIT_DOC_BOT_SECRET"]
             reddit_username = environ["REDDIT_DOC_BOT_USER"]
             reddit_password = environ["REDDIT_DOC_BOT_PASSWORD"]
-            LOGGER.error("Credentials loaded from environment variables.")
+            LOGGER.info("Credentials loaded from environment variables.")
         except KeyError:
             LOGGER.critical(
                 "No credentials found in config.ini file and environment variables were not found. EXITING!"
@@ -241,7 +240,8 @@ def main():
     LOGGER.info("Authentication successfull to redit.com")
     # Define subreddit to monitor
     subreddit = reddit.subreddit("learnpython")
-    # Call function to start itterating through comments
+    # Initialize the bot.
+    LOGGER.info("Python Documentation Bot is Starting Up.")
     bot = PyDocsBot(subreddit)
     bot.monitor_and_reply_to_comments()
 
@@ -250,11 +250,10 @@ if __name__ == "__main__":
 
     while True:
         try:
-            LOGGER.info("Python Documentation Bot is Starting Up.")
             main()
         except (KeyboardInterrupt, SystemExit):
             LOGGER.info("Good Bye!")
             raise SystemExit
         except Exception as e:  # pylint:disable=broad-except
-            LOGGER.error("Something happened. Starting over! Error: %s", e)
+            LOGGER.error("Something happened... Restarting!\n\nError: %s", e)
             continue
