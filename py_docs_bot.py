@@ -12,6 +12,7 @@ Bot's reddit: https://www.reddit.com/user/py_reference_bot
 
 
 import configparser
+from dataclasses import dataclass
 from json import loads
 import logging
 from os import environ
@@ -41,52 +42,56 @@ except Exception as e:
     raise SystemExit
 
 
-def monitor_and_reply_to_comments(subreddit):
+@dataclass
+class PyDocsBot:
     """
-    Loop through comments from the learnpython subreddit and check for bot keyword.
-    If found parse the topics out and retrive related links to documentation and post a reply with the links.
+    Do all the bot things
     """
 
-    LOGGER.info("Monitoring r/learnpython comments for keyword '!docs'")
+    subreddit: object
 
-    # Loop over comment objects returned from reddit. skip_existing=True means that when the bot
-    # starts it will not go back and get existing comments and instead start with new ones.
-    for comment in subreddit.stream.comments(skip_existing=True):
+    def monitor_and_reply_to_comments(self):
+        """
+        Loop through comments from the learnpython subreddit and check for bot keyword.
+        If found parse the topics out and retrive related links to documentation and post a reply with the links.
+        """
 
-        # Check for keyword !docs in comment. If found get reference links from python documentatiom
-        # Module paths are case sensitive.
-        # Command usage: !docs pathlib.Path, re.search, zip, while, pep-8
-        if bool(search(r"^\!docs.+$", comment.body, flags=MULTILINE)):
-            LOGGER.info("New command recieved: %s", repr(comment.body))
-            needed_references = (
-                search(r"^\!docs\s(.+)$", comment.body, flags=MULTILINE)
-                .group(1)
-                .replace(" ", "")
-                .split(",")
-            )
+        LOGGER.info("Monitoring r/learnpython comments for keyword '!docs'")
 
-            # Filter out empty strings for queries that returned no results
-            all_links = [
-                link for link in _get_links_to_python_docs(needed_references) if link
-            ]
+        # Loop over comment objects returned from reddit. skip_existing=True means that when the bot
+        # starts it will not go back and get existing comments and instead start with new ones.
+        for comment in self.subreddit.stream.comments(skip_existing=True):
 
-            if all_links:
-                comment_markdown = f"{''.join(all_links)}  \nPython Documentation Bot - *[How To Use](https://github.com/trevormiller6/Py-Docs-Bot)*"
-                comment.reply(comment_markdown)
-                LOGGER.info("Replied to a comment: %s", repr(comment_markdown))
-            else:
-                LOGGER.error(
-                    "The request was not valid no response sent. Requested docs: %s",
-                    needed_references,
+            # Check for keyword !docs in comment. If found get reference links from python documentatiom
+            # Module paths are case sensitive.
+            # Command usage: !docs pathlib.Path, re.search, zip, while, pep-8
+            if bool(search(r"^\!docs.+$", comment.body, flags=MULTILINE)):
+                LOGGER.info("New command recieved: %s", repr(comment.body))
+                needed_references = (
+                    search(r"^\!docs\s(.+)$", comment.body, flags=MULTILINE)
+                    .group(1)
+                    .replace(" ", "")
+                    .split(",")
                 )
 
+                # Filter out empty strings for queries that returned no results
+                all_links = [
+                    link
+                    for link in self._get_links_to_python_docs(needed_references)
+                    if link
+                ]
 
-def _get_links_to_python_docs(needed_references):
-    """
-    Get link to official python documentation.
-    """
+                if all_links:
+                    comment_markdown = f"{''.join(all_links)}  \nPython Documentation Bot - *[How To Use](https://github.com/trevormiller6/Py-Docs-Bot)*"
+                    comment.reply(comment_markdown)
+                    LOGGER.info("Replied to a comment: %s", repr(comment_markdown))
+                else:
+                    LOGGER.error(
+                        "The request was not valid no response sent. Requested docs: %s",
+                        needed_references,
+                    )
 
-    def _python_enhancement_proposals(reference):
+    def _python_enhancement_proposals(self, reference):
         """
         Get links to python peps
         """
@@ -120,7 +125,7 @@ def _get_links_to_python_docs(needed_references):
 
         return f"[{reference.upper()}]({link})  \n  \n" if bool(get(link)) else ""
 
-    def _language_reference_docs(reference):
+    def _language_reference_docs(self, reference):
         """
         Get links to reference documentation from the python docs site.
         I use fuzzy searching here so that docs called up without having to know the actual title of the reference
@@ -142,7 +147,7 @@ def _get_links_to_python_docs(needed_references):
 
         return "".join(matched_references) if matched_references else ""
 
-    def _library_reference_docs(reference):
+    def _library_reference_docs(self, reference):
         """
         Get links to the documentation on the standard library.
         Python kinda standardized their link structure for their documentation
@@ -178,15 +183,20 @@ def _get_links_to_python_docs(needed_references):
             # If all of the above failed then it most likely is not a python standard library or function
             # or the user had a typo.
 
-    # Loop over each term that was requested by user and get the docs link
-    all_links = [
-        _library_reference_docs(reference)
-        + _language_reference_docs(reference)
-        + _python_enhancement_proposals(reference)
-        for reference in needed_references
-    ]
+    def _get_links_to_python_docs(self, needed_references):
+        """
+        Get link to official python documentation.
+        """
 
-    return all_links
+        # Loop over each term that was requested by user and get the docs link
+        all_links = [
+            self._library_reference_docs(reference)
+            + self._language_reference_docs(reference)
+            + self._python_enhancement_proposals(reference)
+            for reference in needed_references
+        ]
+
+        return all_links
 
 
 def main():
@@ -232,7 +242,8 @@ def main():
     # Define subreddit to monitor
     subreddit = reddit.subreddit("learnpython")
     # Call function to start itterating through comments
-    monitor_and_reply_to_comments(subreddit)
+    bot = PyDocsBot(subreddit)
+    bot.monitor_and_reply_to_comments()
 
 
 if __name__ == "__main__":
