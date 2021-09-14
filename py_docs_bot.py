@@ -48,7 +48,7 @@ class PyDocsBot:
     Do all the bot things
     """
 
-    subreddit: praw.Reddit  # pylint:disable=no-member
+    subreddit: praw.Reddit
 
     def monitor_and_reply_to_comments(self):
         """
@@ -60,7 +60,7 @@ class PyDocsBot:
 
         # Loop over comment objects returned from reddit. skip_existing=True means that when the bot
         # starts it will not go back and get existing comments and instead start with new ones.
-        for comment in self.subreddit.stream.comments(skip_existing=True):
+        for comment in self.subreddit.stream.comments(skip_existing=True):  # pylint:disable=no-member
 
             # Check for keyword !docs in comment. If found get reference links from python documentatiom
             # Module paths are case sensitive.
