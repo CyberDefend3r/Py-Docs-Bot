@@ -1,7 +1,7 @@
 """
 Python Documentation Bot for reddit.
 
-This reddit bot will monitor the /r/learnpython subreddit and when invoked by keyword
+This reddit bot will monitor the r/learnpython subreddit and when invoked by keyword
 will reply with links to python documentation for any python topic(s) requested.
 
 Creator: Trevor Miller
@@ -12,7 +12,6 @@ Bot's reddit: https://www.reddit.com/user/py_reference_bot
 
 
 import configparser
-from dataclasses import dataclass
 from json import loads
 import logging
 from os import environ
@@ -42,13 +41,13 @@ except Exception as e:
     raise SystemExit
 
 
-@dataclass
 class PyDocsBot:
     """
     Do all the bot things
     """
 
-    subreddit: praw.Reddit
+    def __init__(self, subreddit):
+        self.subreddit = subreddit
 
     def monitor_and_reply_to_comments(self):
         """
@@ -60,13 +59,13 @@ class PyDocsBot:
 
         # Loop over comment objects returned from reddit. skip_existing=True means that when the bot
         # starts it will not go back and get existing comments and instead start with new ones.
-        for comment in self.subreddit.stream.comments(skip_existing=True):  # pylint:disable=no-member
+        for comment in self.subreddit.stream.comments(skip_existing=True):
 
             # Check for keyword !docs in comment. If found get reference links from python documentatiom
             # Module paths are case sensitive.
             # Command usage: !docs pathlib.Path, re.search, zip, while, pep-8
             if bool(search(r"^\!docs.+$", comment.body, flags=MULTILINE)):
-                LOGGER.info("New command recieved: %s", repr(comment.body))
+                LOGGER.info("New command received: %s", repr(comment.body))
                 needed_references = (
                     search(r"^\!docs\s(.+)$", comment.body, flags=MULTILINE)
                     .group(1)
@@ -77,7 +76,12 @@ class PyDocsBot:
                 # Filter out empty strings for queries that returned no results
                 all_links = [
                     link
-                    for link in self._get_links_to_python_docs(needed_references)
+                    for link in [
+                        self._library_reference_docs(reference)
+                        + self._language_reference_docs(reference)
+                        + self._python_enhancement_proposals(reference)
+                        for reference in needed_references
+                    ]
                     if link
                 ]
 
@@ -108,12 +112,14 @@ class PyDocsBot:
         try:
             _, pep_number = reference.split("-")
         except Exception:  # pylint:disable=broad-except
+
             return ""
 
         #  Make sure it is actually a number
         try:
             pep_number = int(pep_number)
         except ValueError:
+
             return ""
 
         # Pep links have 4 numbers in the url so pad with leading zeros if needed
@@ -181,21 +187,6 @@ class PyDocsBot:
             # If all of the above failed then it most likely is not a python standard library or function
             # or the user had a typo.
 
-    def _get_links_to_python_docs(self, needed_references):
-        """
-        Get link to official python documentation.
-        """
-
-        # Loop over each term that was requested by user and get the docs link
-        all_links = [
-            self._library_reference_docs(reference)
-            + self._language_reference_docs(reference)
-            + self._python_enhancement_proposals(reference)
-            for reference in needed_references
-        ]
-
-        return all_links
-
 
 def main():
     """
@@ -204,7 +195,7 @@ def main():
 
     # Try to get bot credentials from the file 'credentials.ini' located in script directory
     try:
-        LOGGER.info("Loading credentials from credentials.ini file.")
+        LOGGER.debug("Loading credentials from credentials.ini file.")
         config = configparser.ConfigParser()
         config.read("credentials.ini")
         reddit_api_id = config["reddit"]["client_id"]
@@ -212,23 +203,23 @@ def main():
         reddit_username = config["reddit"]["username"]
         reddit_password = config["reddit"]["password"]
     except Exception:  # pylint:disable=broad-except
-        LOGGER.error("No credentials.ini file found.")
-        LOGGER.info("Checking environment variables for credentials.")
+        LOGGER.debug("No credentials.ini file found.")
+        LOGGER.debug("Checking environment variables for credentials.")
         # Failed to get creds from file so lets check the environment variables.
         try:
             reddit_api_id = environ["REDDIT_DOC_BOT_ID"]
             reddit_api_secret = environ["REDDIT_DOC_BOT_SECRET"]
             reddit_username = environ["REDDIT_DOC_BOT_USER"]
             reddit_password = environ["REDDIT_DOC_BOT_PASSWORD"]
-            LOGGER.info("Credentials loaded from environment variables.")
+            LOGGER.debug("Credentials loaded from environment variables.")
         except KeyError:
             LOGGER.critical(
                 "No credentials found in config.ini file and environment variables were not found. EXITING!"
             )
             raise SystemExit
 
-    bot_user_agent = "(praw-python3.9) py_docs_bot - scanning comments in /r/learnpython and replying with python documentation links"
-    LOGGER.info("Authenticating to reddit")
+    bot_user_agent = "(praw-python3.9) py_docs_bot - scanning comments in r/learnpython and replying with python documentation links"
+    LOGGER.debug("Authenticating to reddit")
     # Instantiate reddit class and authenticate
     reddit = praw.Reddit(
         client_id=reddit_api_id,
@@ -237,7 +228,7 @@ def main():
         password=reddit_password,
         user_agent=bot_user_agent,
     )
-    LOGGER.info("Authentication successfull to redit.com")
+    LOGGER.debug("Authentication successfull to redit.com")
     # Define subreddit to monitor
     subreddit = reddit.subreddit("learnpython")
     # Initialize the bot.
