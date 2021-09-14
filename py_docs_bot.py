@@ -48,7 +48,7 @@ class PyDocsBot:
     Do all the bot things
     """
 
-    subreddit: praw.Reddit.subreddit
+    subreddit: praw.Reddit
 
     def monitor_and_reply_to_comments(self):
         """
