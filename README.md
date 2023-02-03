@@ -78,3 +78,6 @@ You can use sys.path to add the directory to PATH so that python will check that
 [sys.path - https://docs.python.org/3/library/sys.html#sys.path](https://docs.python.org/3/library/sys.html#sys.path)  
   
 Python Documentation Bot - *[How To Use](https://github.com/trevormiller6/Py-Docs-Bot)*
+  
+----  
+<img src="https://cdn.cdnlogo.com/logos/t/48/twitter.png" width="20px"> [@Cyb3r_Detect0r](https://twitter.com/Cyb3r_Detect0r)
